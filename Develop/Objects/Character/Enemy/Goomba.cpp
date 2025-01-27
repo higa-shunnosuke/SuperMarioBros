@@ -31,6 +31,7 @@ void Goomba::Initialize()
 	collision.box_size = Vector2D(25.0f, 32.0f);
 
 	image = animation1[0];
+	anim_count = 0.0f;
 }
 
 void Goomba::Update(float delta_second)
@@ -62,6 +63,8 @@ void Goomba::Update(float delta_second)
 			is_death = true;
 		}
 	}
+
+	AnimationControl(delta_second);
 }
 
 void Goomba::Draw(const Vector2D camera_pos) const
@@ -212,7 +215,20 @@ void Goomba::Movement(float delta_second)
 /// <param name="delta_second">1ÉtÉåÅ[ÉÄÇ†ÇΩÇËÇÃéûä‘</param>
 void Goomba::AnimationControl(float delta_second)
 {
+	anim_count += delta_second;
 
+	if (anim_count >= 0.1f)
+	{
+		if (image == animation1[0])
+		{
+			image = animation1[1];
+		}
+		else if (image == animation1[1])
+		{
+			image = animation1[0];
+		}
+		anim_count = 0;
+	}
 }
 
 /// <summary>
