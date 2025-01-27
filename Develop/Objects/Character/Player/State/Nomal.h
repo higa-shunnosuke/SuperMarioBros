@@ -9,7 +9,6 @@ class Nomal :public PlayerStateBase
 {
 private:
 
-
 public:
 	///<summary>
 	///コンストラクタ

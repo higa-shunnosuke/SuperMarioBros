@@ -9,6 +9,7 @@ enum class ePlayerState {
 	NOMAL = 0,	//ノーマルマリオ
 	SUPER,		//スーパーマリオ
 	FIRE,		//ファイヤマリオ
+	TIBI,		//マメマリオ
 	NONE		//
 };
 
