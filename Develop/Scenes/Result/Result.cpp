@@ -1,6 +1,7 @@
 #include "Result.h"
 #include "../../Objects/Character/Player/Player.h"
 
+// コンストラクタ
 Result::Result() :
 	num(NULL)
 {
@@ -8,11 +9,13 @@ Result::Result() :
 	__super::Initialize();
 }
 
+// デストラクタ
 Result::~Result()
 {
 
 }
 
+// 初期化処理
 void Result::Initialize()
 {
 	// 親クラスの初期化処理を呼び出す
@@ -23,6 +26,7 @@ void Result::Initialize()
 	num = rm->GetImages("Resource/Images/UI/num.png", 15, 15, 1, 16, 16);
 }
 
+// 更新処理
 eSceneType Result::Update(const float& delta_second)
 {
 	// 入力情報を取得
@@ -43,9 +47,11 @@ eSceneType Result::Update(const float& delta_second)
 
 }
 
+// 描画処理
 void Result::Draw() const
 {
-	// UIの描画
+	/*************************　UIの描画　***************************/
+
 	// スコアの描画
 	for (int i = 0; i < 6; i++)
 	{
@@ -79,12 +85,14 @@ void Result::Draw() const
  	__super::Draw();
 }
 
+// 終了処理
 void Result::Finalize()
 {
 	// 親クラスの終了時処理を呼び出す
 	__super::Finalize();
 }
 
+// 現在のシーンタイプ情報を取得する
 const eSceneType Result::GetNowSceneType() const
 {
 	return eSceneType::result;

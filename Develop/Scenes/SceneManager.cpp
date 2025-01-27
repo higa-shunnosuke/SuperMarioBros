@@ -8,12 +8,14 @@
 #include "../Objects/GameObject.h"
 
 
+// コンストラクタ
 SceneManager::SceneManager() :
 	current_scene(nullptr)
 {
 
 }
 
+// デストラク
 SceneManager::~SceneManager()
 {
 	// 解放忘れ防止
@@ -28,7 +30,7 @@ void SceneManager::Initialize()
 
 }
 
-//  実行処理
+//  更新処理
 void SceneManager::Update(float delta_second)
 {
 	// シーンの更新
@@ -36,27 +38,34 @@ void SceneManager::Update(float delta_second)
 
 	GameObjectManager* object;			// オブジェクトマネージャーのポインタ
 	object = GameObjectManager::GetInstance();
+
+	// オブジェクトリストを取得
 	std::vector<GameObject*> objects_list = object->GetObjectsList();
 
 	// 当たり判定確認処理
 	for (int i = 0; i < objects_list.size(); i++)
 	{
+		// 動かないオブジェクトの場合当たり判定確認処理をしない
 		if (objects_list[i]->GetMobility() == false)
 		{
 			continue;
 		}
-
-		for (int j = 0; j < objects_list.size(); j++)
+		else
 		{
-			if (i == j)
+			for (int j = 0; j < objects_list.size(); j++)
 			{
-				continue;
-			}
+				if (i == j)
+				{
+					continue;
+				}
 
-			CheckCollision(objects_list[i], objects_list[j]);
+				// 当たり判定確認処理
+				CheckCollision(objects_list[i], objects_list[j]);
+			}
 		}
 	}
 
+	// フォントサイズ変更
 	SetFontSize(32);
 
 	// 描画処理
@@ -82,9 +91,7 @@ void SceneManager::Finalize()
 	}
 }
 
-/// <summary>
-/// 描画処理
-/// </summary>
+// 描画処理
 void SceneManager::Draw() const
 {
 	// 画面の初期化
