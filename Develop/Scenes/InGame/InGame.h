@@ -2,7 +2,6 @@
 
 #include "../SceneBase.h"
 #include "../../Objects/Character/Player/Player.h"
-#include "../../Utility/Camera/Camera.h"
 
 #define SIZE_X 211
 #define SIZE_Y 16

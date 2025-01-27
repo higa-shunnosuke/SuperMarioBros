@@ -24,7 +24,7 @@ SceneManager::~SceneManager()
 void SceneManager::Initialize()
 {
 	// 最初のシーンをタイトル画面にする
-	ChangeScene(eSceneType::title);
+	ChangeScene(eSceneType::in_game);
 
 }
 

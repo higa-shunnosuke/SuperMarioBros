@@ -14,6 +14,7 @@
 
 #define PLAYER_INITIAL_LOCATION 3 // プレイヤー初期位置(何ブロック目）
 
+// コンストラクタ
 InGame::InGame() :
 	score(0),
 	num(NULL),
@@ -27,9 +28,11 @@ InGame::InGame() :
 	
 }
 
+// デストラクタ
 InGame::~InGame()
 {
-
+	// 解放忘れ防止
+	Finalize();
 }
 
 void InGame::Initialize()
@@ -58,7 +61,7 @@ void InGame::Initialize()
 	cloud_image[5] = rm->GetImages("Resource/Images/cloud6.png")[0];
 
 	// カメラの生成
-	camera = new Camera;
+	camera = Camera::GetInstance();
 
 	// マップデータ読み込み生成処理
 	LoadStage();
