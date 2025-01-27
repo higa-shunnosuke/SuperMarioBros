@@ -19,6 +19,8 @@ protected:
 	bool direction;
 	bool is_death;					//€‚ñ‚Å‚¢‚é‚©H
 
+	float anim_count;
+
 public:
 	Character() :
 		image(),

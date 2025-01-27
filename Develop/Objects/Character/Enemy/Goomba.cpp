@@ -30,6 +30,7 @@ void Goomba::Initialize()
 	collision.hit_object_type.push_back(eObjectType::eBlock);
 	collision.box_size = Vector2D(25.0f, 32.0f);
 
+	image = animation1[0];
 }
 
 void Goomba::Update(float delta_second)
@@ -69,7 +70,7 @@ void Goomba::Draw(const Vector2D camera_pos) const
 	position.x -= camera_pos.x - D_WIN_MAX_X / 2;
 
 	// ƒŒƒ“ƒK‚Ì•`‰æ
-	DrawRotaGraph(position.x, location.y, 1.0, 0.0, animation1[1], TRUE);
+	DrawRotaGraph(position.x, location.y, 1.0, 0.0, image, TRUE);
 
 #ifdef DEBUG
 	// “–‚½‚è”»’è•\Ž¦
@@ -188,6 +189,11 @@ void Goomba::OnHitCollision(GameObject* hit_object)
 				}
 			}
 		}
+	}
+	if (hc.object_type==eObjectType::ePlayer)
+	{
+		velocity = 0;
+		image = animation1[2];
 	}
 }
 
