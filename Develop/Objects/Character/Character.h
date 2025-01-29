@@ -29,7 +29,8 @@ public:
 		hit_point(),
 		on_ground(false),
 		direction(false),
-		is_death()
+		is_death(),
+		anim_count(0)
 	{
 
 	}

@@ -29,8 +29,9 @@ void Koopa::Initialize()
 	collision.hit_object_type.push_back(eObjectType::ePlayer);
 	collision.hit_object_type.push_back(eObjectType::eEnemy);
 	collision.hit_object_type.push_back(eObjectType::eBlock);
-	collision.box_size = Vector2D(32.0f, 45.0f);
+	collision.box_size = Vector2D(32.0f, 39.0f);
 
+	image = animation1[0];
 }
 
 void Koopa::Update(float delta_second)
@@ -62,6 +63,8 @@ void Koopa::Update(float delta_second)
 			is_death = true;
 		}
 	}
+
+	AnimationControl(delta_second);
 }
 
 void Koopa::Draw(const Vector2D camera_pos) const
@@ -69,8 +72,15 @@ void Koopa::Draw(const Vector2D camera_pos) const
 	Vector2D position = this->GetLocation();
 	position.x -= camera_pos.x - D_WIN_MAX_X / 2;
 
-	// レンガの描画
-	DrawRotaGraph(position.x, location.y - 9.0f, 1.0, 0.0, animation1[1], TRUE);
+	// ノコノコの描画
+	if (image == animation2[0] || image == animation2[1])
+	{
+		DrawRotaGraph(position.x, location.y, 1.0, 0.0, image, TRUE);
+	}
+	else
+	{
+		DrawRotaGraph(position.x, location.y - 12.0f, 1.0, 0.0, image, TRUE);
+	}
 
 #ifdef DEBUG
 	// 当たり判定表示
@@ -93,14 +103,14 @@ void Koopa::OnHitCollision(GameObject* hit_object)
 	// 当たり判定情報を取得して、矩形がある位置を求める
 	Collision hc = hit_object->GetCollision();
 
+	// ２点間の距離を計算
+	Vector2D distance;
+	distance = this->location - hit_object->GetLocation();
+
 	// 当たった、オブジェクトが壁だったら
 	if (hc.object_type == eObjectType::eBlock)
 	{
 		Vector2D diff;	// めり込み
-
-		// ２点間の距離を計算
-		Vector2D distance;
-		distance = this->location - hit_object->GetLocation();
 
 		// 衝突面を求める
 		if (distance.x <= 0)
@@ -190,6 +200,18 @@ void Koopa::OnHitCollision(GameObject* hit_object)
 			}
 		}
 	}
+
+	// プレイヤーに当たったときの処理
+	if (hc.object_type == eObjectType::ePlayer)
+	{
+		// プレイヤーが上から当たったのなら
+		if (distance.y >= collision.box_size.y / 2.0f)
+		{
+			velocity = 0;
+			image = animation2[0];
+			collision.box_size = Vector2D(32.0f, 32.0f);
+		}
+	}
 }
 
 /// <summary>
@@ -207,7 +229,20 @@ void Koopa::Movement(float delta_second)
 /// <param name="delta_second">1フレームあたりの時間</param>
 void Koopa::AnimationControl(float delta_second)
 {
+	anim_count += delta_second;
 
+	if (anim_count >= 0.1f)
+	{
+		if (image == animation1[0])
+		{
+			image = animation1[1];
+		}
+		else if (image == animation1[1])
+		{
+			image = animation1[0];
+		}
+		anim_count = 0;
+	}
 }
 
 /// <summary>
