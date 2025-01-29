@@ -349,7 +349,18 @@ void InGame::LoadStage()
 		// 抽出した文字がFなら、床ブロックを生成する
 		else if (c == 'F')
 		{
-			object->CreateObject<Floor>(Vector2D(location.x, location.y));
+			Floor* floor;
+			floor = object->CreateObject<Floor>(Vector2D(location.x, location.y));
+
+			c = fgetc(fp);
+			switch (c)
+			{
+			case 'g':
+				break;
+
+			case 'u':
+				break;
+			}
 			x++;
 		}
 		// 抽出した文字がHなら、はてなブロックを生成する
@@ -361,7 +372,18 @@ void InGame::LoadStage()
 		// 抽出した文字がBなら、レンガブロックを生成する
 		else if (c == 'B')
 		{
-			object->CreateObject<Block>(Vector2D(location.x, location.y));
+			Block* block;
+			block = object->CreateObject<Block>(Vector2D(location.x, location.y));
+
+			c = fgetc(fp);
+			switch (c)
+			{
+			case 'g':
+					break;
+
+			case 'u':
+				break;
+			}
 			x++;
 		}
 		// 抽出した文字がSなら、階段ブロックを生成する
@@ -389,6 +411,24 @@ void InGame::LoadStage()
 				pipe->SetType(ePipeType::RIGHT_DOWN);
 				break;
 			case '3':
+				pipe->SetType(ePipeType::RIGHT_UP);
+				break;
+			case '4':
+				pipe->SetType(ePipeType::RIGHT_UP);
+				break;
+			case '5':
+				pipe->SetType(ePipeType::RIGHT_UP);
+				break;
+			case '6':
+				pipe->SetType(ePipeType::RIGHT_UP);
+				break;
+			case '7':
+				pipe->SetType(ePipeType::RIGHT_UP);
+				break;
+			case '8':
+				pipe->SetType(ePipeType::RIGHT_UP);
+				break;
+			case '9':
 				pipe->SetType(ePipeType::RIGHT_UP);
 				break;
 			}
