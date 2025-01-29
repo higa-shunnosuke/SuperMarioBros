@@ -61,7 +61,7 @@ void InGame::Initialize()
 	cloud_image[4] = rm->GetImages("Resource/Images/cloud5.png")[0];
 	cloud_image[5] = rm->GetImages("Resource/Images/cloud6.png")[0];
 
-	// カメラの生成
+	// カメラの情報を取得
 	camera = Camera::GetInstance();
 
 	// マップデータ読み込み生成処理

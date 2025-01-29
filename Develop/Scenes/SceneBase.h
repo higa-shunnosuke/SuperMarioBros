@@ -78,6 +78,9 @@ public:
 	/// </summary>
 	virtual void Initialize()
 	{
+		// カメラの情報を取得
+		camera = Camera::GetInstance();
+
 		// オブジェクトマネージャーの情報を取得
 		object = GameObjectManager::GetInstance();
 
