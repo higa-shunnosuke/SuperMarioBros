@@ -8,6 +8,9 @@ class Koopa : public Character
 private:
 	std::vector<int> animation1;		//移動のアニメーション画像
 	std::vector<int> animation2;		//甲羅のアニメーション画像
+
+	bool is_shell;  // 甲羅状態かどうか
+
 	Camera* camera;
 
 public:

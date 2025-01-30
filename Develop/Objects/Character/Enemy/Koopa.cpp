@@ -1,7 +1,8 @@
 #include "Koopa.h"
 
 Koopa::Koopa() :
-	camera()
+	camera(),
+	is_shell(false)
 {
 
 }
@@ -204,12 +205,27 @@ void Koopa::OnHitCollision(GameObject* hit_object)
 	// プレイヤーに当たったときの処理
 	if (hc.object_type == eObjectType::ePlayer)
 	{
-		// プレイヤーが上から当たったのなら
-		if (distance.y >= collision.box_size.y / 2.0f)
+		if (is_shell == true)
 		{
-			velocity = 0;
-			image = animation2[0];
-			collision.box_size = Vector2D(32.0f, 32.0f);
+			if (location.x < hit_object->GetLocation().x)
+			{
+				this->velocity.x = -500.0f;
+			}
+			else if (location.x >= hit_object->GetLocation().x)
+			{
+				this->velocity.x = 500.0f;
+			}
+		}
+		else
+		{
+			// プレイヤーが上から当たったのなら
+			if (distance.y >= collision.box_size.y / 2.0f)
+			{
+				velocity = 0;
+				image = animation2[0];
+				is_shell = true;
+				collision.box_size = Vector2D(32.0f, 32.0f);
+			}
 		}
 	}
 }
