@@ -10,6 +10,7 @@ private:
 	std::vector<int> animation2;		//甲羅のアニメーション画像
 
 	bool is_shell;  // 甲羅状態かどうか
+	bool is_hit;    // 一度当たった状態かどうか
 
 	Camera* camera;
 

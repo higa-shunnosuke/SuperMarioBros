@@ -2,7 +2,8 @@
 
 Koopa::Koopa() :
 	camera(),
-	is_shell(false)
+	is_shell(false),
+	is_hit(false)
 {
 
 }
@@ -73,11 +74,12 @@ void Koopa::Draw(const Vector2D camera_pos) const
 	Vector2D position = this->GetLocation();
 	position.x -= camera_pos.x - D_WIN_MAX_X / 2;
 
-	// ノコノコの描画
+	// ノコノコが甲羅状態なら
 	if (image == animation2[0] || image == animation2[1])
 	{
 		DrawRotaGraph(position.x, location.y, 1.0, 0.0, image, TRUE);
 	}
+	// ノコノコが歩行状態なら
 	else
 	{
 		DrawRotaGraph(position.x, location.y - 12.0f, 1.0, 0.0, image, TRUE);
@@ -108,7 +110,7 @@ void Koopa::OnHitCollision(GameObject* hit_object)
 	Vector2D distance;
 	distance = this->location - hit_object->GetLocation();
 
-	// 当たった、オブジェクトが壁だったら
+	// 当たったオブジェクトが壁だったら
 	if (hc.object_type == eObjectType::eBlock)
 	{
 		Vector2D diff;	// めり込み
@@ -126,12 +128,12 @@ void Koopa::OnHitCollision(GameObject* hit_object)
 				if (diff.x < diff.y)
 				{
 					// 左に
-					//velocity.x *= -1;
+					velocity.x *= -1;
 				}
 				else
 				{
 					// 上に
-					//location.y -= diff.y;
+					location.y -= diff.y;
 					on_ground = true;
 				}
 			}
@@ -169,7 +171,7 @@ void Koopa::OnHitCollision(GameObject* hit_object)
 				if (-diff.x < -diff.y || distance.y == 0)
 				{
 					// 右に
-					//velocity.x *= -1;
+					velocity.x *= -1;
 				}
 				else
 				{
@@ -190,27 +192,30 @@ void Koopa::OnHitCollision(GameObject* hit_object)
 				if (-diff.x < diff.y)
 				{
 					// 右に
-					//velocity.x *= -1;
+					velocity.x *= -1;
 				}
 				else
 				{
 					// 上に
-					//location.y -= diff.y;
+					location.y -= diff.y;
 					on_ground = true;
 				}
 			}
 		}
 	}
 
-	// プレイヤーに当たったときの処理
+	// 当たったオブジェクトがプレイヤーなら
 	if (hc.object_type == eObjectType::ePlayer)
 	{
+		// ノコノコが甲羅状態かどうか
 		if (is_shell == true)
 		{
+			// プレイヤーの位置がノコノコより右
 			if (location.x < hit_object->GetLocation().x)
 			{
 				this->velocity.x = -500.0f;
 			}
+			// プレイヤーの位置がノコノコより左
 			else if (location.x >= hit_object->GetLocation().x)
 			{
 				this->velocity.x = 500.0f;
@@ -226,6 +231,16 @@ void Koopa::OnHitCollision(GameObject* hit_object)
 				is_shell = true;
 				collision.box_size = Vector2D(32.0f, 32.0f);
 			}
+		}
+	}
+
+	// エネミーに当たったとき
+	if (hc.object_type == eObjectType::eEnemy)
+	{
+		if (is_hit == false)
+		{
+			velocity.x = -velocity.x;
+			is_hit = true;
 		}
 	}
 }
