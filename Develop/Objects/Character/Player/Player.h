@@ -24,6 +24,7 @@ private:
 	ePlayerState next_state;		//Ÿ‚Ìó‘Ô
 	float friction;					//–€C
 	Camera* camera;					//ƒJƒƒ‰î•ñ
+	
 
 public:
 	Player();
@@ -69,6 +70,11 @@ private:
 	/// </summary>
 	/// <param name="delta_second">1ƒtƒŒ[ƒ€‚ ‚½‚è‚ÌŠÔ</param>
 	void AnimationControl(float delta_second);
+
+	/// <summary>
+	/// ‘–‚éˆ—
+	/// </summary>
+	void Run();
 
 public:
 	/// <summary>

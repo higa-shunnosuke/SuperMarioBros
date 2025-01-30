@@ -71,7 +71,15 @@ void Player::Update(float delta_second)
 	else
 	{
 		//èdóÕâ¡ë¨ìxÇÃåvéZ
-		g_velocity += D_GRAVITY / 9807;
+		if (g_velocity)
+		{
+			g_velocity += D_GRAVITY / 1500;				//(9807),
+		}
+		else
+		{
+			g_velocity += D_GRAVITY / 1600;				//(9807),
+		}
+		g_velocity += D_GRAVITY / 800;				//(9807),
 		velocity.y += g_velocity;
 	}
 
@@ -265,7 +273,7 @@ void Player::Jump()
 {
 	if (on_ground == true)
 	{
-		velocity.y = -2.5f;
+		velocity.y = -3.5f;
 	}
 
 	on_ground = false;
@@ -277,6 +285,19 @@ void Player::Jump()
 void Player::Squt()
 {
 
+}
+
+/// <summary>
+/// ëñÇÈèàóù
+/// </summary>
+void Player::Run()
+{
+	InputManager* input = InputManager::GetInstance();
+
+	if (input->GetKeyState(KEY_INPUT_LSHIFT) == eInputState::Hold)
+	{
+		
+	}
 }
 
 /// <summary>

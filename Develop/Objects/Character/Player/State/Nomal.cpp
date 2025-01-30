@@ -28,7 +28,7 @@ void Nomal::Initialize()
 	ResourceManager* rm = ResourceManager::GetInstance();
 	animation = rm->GetImages("Resource/Images/Mario/mario.png", 9, 9, 1, 32, 32);
 
-	// “–‚½‚è”»’è‰Šú‰»                                                                                                     nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnccccccccccccccccccc
+	// “–‚½‚è”»’è‰Šú‰»                                                                               
 	box_size = (32.0f, 32.0f);
 }
 
