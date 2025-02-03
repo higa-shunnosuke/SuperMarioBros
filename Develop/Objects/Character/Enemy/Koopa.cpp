@@ -38,6 +38,7 @@ void Koopa::Initialize()
 
 void Koopa::Update(float delta_second)
 {
+	is_hit = false;
 
 	if (on_ground == true)
 	{
@@ -207,30 +208,34 @@ void Koopa::OnHitCollision(GameObject* hit_object)
 	// 当たったオブジェクトがプレイヤーなら
 	if (hc.object_type == eObjectType::ePlayer)
 	{
-		// ノコノコが甲羅状態かどうか
-		if (is_shell == true)
+		if (is_hit == false)
 		{
-			// プレイヤーの位置がノコノコより右
-			if (location.x < hit_object->GetLocation().x)
+			// ノコノコが甲羅状態かどうか
+			if (is_shell == true)
 			{
-				this->velocity.x = -500.0f;
+				// プレイヤーの位置がノコノコより右
+				if (location.x < hit_object->GetLocation().x)
+				{
+					this->velocity.x = -500.0f;
+				}
+				// プレイヤーの位置がノコノコより左
+				else if (location.x >= hit_object->GetLocation().x)
+				{
+					this->velocity.x = 500.0f;
+				}
 			}
-			// プレイヤーの位置がノコノコより左
-			else if (location.x >= hit_object->GetLocation().x)
+			else
 			{
-				this->velocity.x = 500.0f;
+				// プレイヤーが上から当たったのなら
+				if (distance.y >= collision.box_size.y / 2.0f)
+				{
+					velocity = 0;
+					image = animation2[0];
+					is_shell = true;
+					collision.box_size = Vector2D(32.0f, 32.0f);
+				}
 			}
-		}
-		else
-		{
-			// プレイヤーが上から当たったのなら
-			if (distance.y >= collision.box_size.y / 2.0f)
-			{
-				velocity = 0;
-				image = animation2[0];
-				is_shell = true;
-				collision.box_size = Vector2D(32.0f, 32.0f);
-			}
+			is_hit = true;
 		}
 	}
 
