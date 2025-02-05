@@ -3,6 +3,10 @@
 #include "../../../Utility/Input/InputEventManager.h"
 #include "../../../Utility/Camera/Camera.h"
 
+#include <iostream>
+#include <thread>
+#include <chrono>
+
 #define D_PLAYER_SPEED 400.0f
 
 Player::Player() :
@@ -17,11 +21,36 @@ Player::Player() :
 }
 
 Player::~Player()
+
 {
 	
 }
 
-void Player::Initialize()
+//Initializeにする
+//int main() {
+//	Player player;
+//	player.run();
+//	return 0;
+//}
+
+//int main() {
+//	// DxLibの初期化
+//	ChangeWindowMode(TRUE);  // ウィンドウモードで起動
+//	if (DxLib_Init() == -1) return -1;  // DxLibの初期化 (エラーなら終了)
+//
+//	// 画面サイズ設定
+//	SetGraphMode(800, 600, 32);
+//
+//	// マリオの座標
+//	int marioX = 100;
+//	int marioY = 400;
+//	int speed = 5;  // 走るスピード
+//
+//	// マリオの画像 (事前に "mario.png" を用意する)
+//	int marioImg = LoadGraph("mario.png");
+
+
+void Player::Initialize()		
 {
 	state = PlayerStateFactory::Get((*this), ePlayerState::NOMAL);
 	next_state = ePlayerState::NONE;
@@ -34,7 +63,7 @@ void Player::Initialize()
 	//入力イベントの登録
 	InputEventManager* input_event = InputEventManager::GetInstance();
 	input_event->ActionKeyBind(KEY_INPUT_W, eInputState::Pressed, this, &Player::Jump);
-
+	/*input_event->ActionKeyBind(KEY_INPUT_LSHIFT, eInputState::Hold, this, &Player::Run);*/
 	input_event->ActionKeyBind(KEY_INPUT_A, -1, this, &Player::Movement);
 	input_event->ActionKeyBind(KEY_INPUT_D, 1, this, &Player::Movement);
 
@@ -44,6 +73,29 @@ void Player::Initialize()
 	collision.hit_object_type.push_back(eObjectType::eBlock);
 	collision.hit_object_type.push_back(eObjectType::eItem);
 }
+
+//Updateに追加
+//while (ProcessMessage() == 0) {
+//	// 画面クリア
+//	ClearDrawScreen();
+//
+//	// 右キーで走る
+//	if (CheckHitKey(KEY_INPUT_RIGHT)) {
+//		marioX += speed;
+//	}
+//
+//	// 左キーで戻る
+//	if (CheckHitKey(KEY_INPUT_LEFT)) {
+//		marioX -= speed;
+//	}
+//
+//	// マリオの描画
+//	DrawGraph(marioX, marioY, marioImg, TRUE);
+//
+//	// 画面更新
+//	ScreenFlip();
+//}
+
 
 void Player::Update(float delta_second)
 {
@@ -71,7 +123,15 @@ void Player::Update(float delta_second)
 	else
 	{
 		//重力加速度の計算
-		g_velocity += D_GRAVITY / 9807;
+		if (g_velocity)
+		{
+			g_velocity += D_GRAVITY / 1500;				//(9807),
+		}
+		else
+		{
+			g_velocity += D_GRAVITY / 1600;				//(9807),
+		}
+		g_velocity += D_GRAVITY / 800;				//(9807),
 		velocity.y += g_velocity;
 	}
 
@@ -265,7 +325,7 @@ void Player::Jump()
 {
 	if (on_ground == true)
 	{
-		velocity.y = -2.5f;
+		velocity.y = -3.5f;
 	}
 
 	on_ground = false;
@@ -277,6 +337,18 @@ void Player::Jump()
 void Player::Squt()
 {
 
+}
+
+ // <summary>
+ // 走る処理
+ // </summary>
+void Player::Run()
+{
+//while (x < 50) {	//50 の位置まで走る
+//	x += speed;
+//	/*display();*/
+//	std::this_thread::sleep_for(std::chrono::milliseconds(100));
+//	}
 }
 
 /// <summary>

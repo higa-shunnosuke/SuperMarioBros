@@ -1,6 +1,10 @@
 #pragma once
+//#include <iostream>
+//#include <thread>
+//#include <chrono>
 
 #include "../Character.h"
+
 
 // カメラクラスへの参照
 class Camera;
@@ -9,6 +13,7 @@ enum class ePlayerState {
 	NOMAL = 0,	//ノーマルマリオ
 	SUPER,		//スーパーマリオ
 	FIRE,		//ファイヤマリオ
+	TIBI,		//マメマリオ
 	NONE		//
 };
 
@@ -23,9 +28,10 @@ private:
 	ePlayerState next_state;		//次の状態
 	float friction;					//摩擦
 	Camera* camera;					//カメラ情報
+	
 
 public:
-	Player();
+	Player();	//初期位置 0, 速度 1
 	~Player();
 
 public:
@@ -33,6 +39,24 @@ public:
 	virtual void Update(float delta_second) override;
 	virtual void Draw(const Vector2D camera_pos) const override;
 	virtual void Finalize() override;
+
+	//試し用
+	//int x;		//マリオのx座標	
+	//int speed;	//走る速度
+	//Player():x(0),speed(1){}	//初期位置 0, 速度 1
+	//void run() {
+	//	while (x < 50) {	//50 の位置まで走る
+	//		x += speed;
+	//		/*display();*/
+	//		std::this_thread::sleep_for(std::chrono::milliseconds(100));
+	//	}
+	//}
+	/*void display() {
+		system("clear");
+		for (int i = 0; i < x; i++) std::cout << " ";
+		std::cout << "P" << std::endl;
+	}*/
+
 
 	/// <summary>
 	/// 当たり判定通知処理
@@ -68,6 +92,11 @@ private:
 	/// </summary>
 	/// <param name="delta_second">1フレームあたりの時間</param>
 	void AnimationControl(float delta_second);
+
+	/// <summary>
+	/// 走る処理
+	/// </summary>
+	void Run();
 
 public:
 	/// <summary>
