@@ -213,16 +213,16 @@ void Koopa::OnHitCollision(GameObject* hit_object)
 			// ノコノコが甲羅状態かどうか
 			if (is_shell == true)
 			{
-				//// プレイヤーの位置がノコノコより右
-				//if (location.x < hit_object->GetLocation().x)
-				//{
-				//	this->velocity.x = -500.0f;
-				//}
-				//// プレイヤーの位置がノコノコより左
-				//else if (location.x >= hit_object->GetLocation().x)
-				//{
-				//	this->velocity.x = 500.0f;
-				//}
+				// プレイヤーの位置がノコノコより右
+				if (location.x < hit_object->GetLocation().x)
+				{
+					this->velocity.x = -500.0f;
+				}
+				// プレイヤーの位置がノコノコより左
+				else if (location.x >= hit_object->GetLocation().x)
+				{
+					this->velocity.x = 500.0f;
+				}
 			}
 			else if(is_shell==false)
 			{
@@ -267,28 +267,28 @@ void Koopa::AnimationControl(float delta_second)
 {
 	anim_count += delta_second;
 
-	// 甲羅状態のアニメーション
-	if (is_shell == true)
-	{
-		if (velocity.x == 0.0f)
-		{
-			if (anim_count >= 0.05f)
-			{
-				if (image == animation2[0])
-				{
-					image = animation2[1];
-				}
-				else if (image == animation2[1])
-				{
-					image = animation2[0];
-				}
-				anim_count = 0;
-			}
-		}
-	}
+	//// 甲羅状態のアニメーション
+	//if (is_shell == true)
+	//{
+	//	if (velocity.x == 0.0f)
+	//	{
+	//		if (anim_count >= 0.05f)
+	//		{
+	//			if (image == animation2[0])
+	//			{
+	//				image = animation2[1];
+	//			}
+	//			else if (image == animation2[1])
+	//			{
+	//				image = animation2[0];
+	//			}
+	//			anim_count = 0;
+	//		}
+	//	}
+	//}
 	// 歩行状態のアニメーション
-	else
-	{
+	/*else
+	{*/
 		if (anim_count >= 0.1f)
 		{
 			if (image == animation1[0])
@@ -301,7 +301,7 @@ void Koopa::AnimationControl(float delta_second)
 			}
 			anim_count = 0;
 		}
-	}
+	//}
 }
 
 /// <summary>
