@@ -1,7 +1,9 @@
 #include "Koopa.h"
 
 Koopa::Koopa() :
-	camera()
+	camera(),
+	is_shell(false),
+	is_hit(false)
 {
 
 }
@@ -29,12 +31,14 @@ void Koopa::Initialize()
 	collision.hit_object_type.push_back(eObjectType::ePlayer);
 	collision.hit_object_type.push_back(eObjectType::eEnemy);
 	collision.hit_object_type.push_back(eObjectType::eBlock);
-	collision.box_size = Vector2D(32.0f, 45.0f);
+	collision.box_size = Vector2D(32.0f, 39.0f);
 
+	image = animation1[0];
 }
 
 void Koopa::Update(float delta_second)
 {
+	is_hit = false;
 
 	if (on_ground == true)
 	{
@@ -62,6 +66,8 @@ void Koopa::Update(float delta_second)
 			is_death = true;
 		}
 	}
+
+	AnimationControl(delta_second);
 }
 
 void Koopa::Draw(const Vector2D camera_pos) const
@@ -69,8 +75,16 @@ void Koopa::Draw(const Vector2D camera_pos) const
 	Vector2D position = this->GetLocation();
 	position.x -= camera_pos.x - D_WIN_MAX_X / 2;
 
-	// レンガの描画
-	DrawRotaGraph(position.x, location.y - 9.0f, 1.0, 0.0, animation1[1], TRUE);
+	// ノコノコが甲羅状態なら
+	if (image == animation2[0] || image == animation2[1])
+	{
+		DrawRotaGraph(position.x, location.y, 1.0, 0.0, image, TRUE);
+	}
+	// ノコノコが歩行状態なら
+	else
+	{
+		DrawRotaGraph(position.x, location.y - 12.0f, 1.0, 0.0, image, TRUE);
+	}
 
 #ifdef DEBUG
 	// 当たり判定表示
@@ -93,14 +107,14 @@ void Koopa::OnHitCollision(GameObject* hit_object)
 	// 当たり判定情報を取得して、矩形がある位置を求める
 	Collision hc = hit_object->GetCollision();
 
-	// 当たった、オブジェクトが壁だったら
+	// ２点間の距離を計算
+	Vector2D distance;
+	distance = this->location - hit_object->GetLocation();
+
+	// 当たったオブジェクトが壁だったら
 	if (hc.object_type == eObjectType::eBlock)
 	{
 		Vector2D diff;	// めり込み
-
-		// ２点間の距離を計算
-		Vector2D distance;
-		distance = this->location - hit_object->GetLocation();
 
 		// 衝突面を求める
 		if (distance.x <= 0)
@@ -115,12 +129,12 @@ void Koopa::OnHitCollision(GameObject* hit_object)
 				if (diff.x < diff.y)
 				{
 					// 左に
-					//velocity.x *= -1;
+					velocity.x *= -1;
 				}
 				else
 				{
 					// 上に
-					//location.y -= diff.y;
+					location.y -= diff.y;
 					on_ground = true;
 				}
 			}
@@ -158,7 +172,7 @@ void Koopa::OnHitCollision(GameObject* hit_object)
 				if (-diff.x < -diff.y || distance.y == 0)
 				{
 					// 右に
-					//velocity.x *= -1;
+					velocity.x *= -1;
 				}
 				else
 				{
@@ -179,15 +193,59 @@ void Koopa::OnHitCollision(GameObject* hit_object)
 				if (-diff.x < diff.y)
 				{
 					// 右に
-					//velocity.x *= -1;
+					velocity.x *= -1;
 				}
 				else
 				{
 					// 上に
-					//location.y -= diff.y;
+					location.y -= diff.y;
 					on_ground = true;
 				}
 			}
+		}
+	}
+
+	// 当たったオブジェクトがプレイヤーなら
+	if (hc.object_type == eObjectType::ePlayer)
+	{
+		if (is_hit == false)
+		{
+			// ノコノコが甲羅状態かどうか
+			if (is_shell == true)
+			{
+				// プレイヤーの位置がノコノコより右
+				if (location.x < hit_object->GetLocation().x)
+				{
+					this->velocity.x = -500.0f;
+				}
+				// プレイヤーの位置がノコノコより左
+				else if (location.x >= hit_object->GetLocation().x)
+				{
+					this->velocity.x = 500.0f;
+				}
+			}
+			else
+			{
+				// プレイヤーが上から当たったのなら
+				if (distance.y >= collision.box_size.y / 2.0f)
+				{
+					velocity = 0;
+					image = animation2[0];
+					is_shell = true;
+					collision.box_size = Vector2D(32.0f, 32.0f);
+				}
+			}
+			is_hit = true;
+		}
+	}
+
+	// エネミーに当たったとき
+	if (hc.object_type == eObjectType::eEnemy)
+	{
+		if (is_hit == false)
+		{
+			velocity.x = -velocity.x;
+			is_hit = true;
 		}
 	}
 }
@@ -207,7 +265,20 @@ void Koopa::Movement(float delta_second)
 /// <param name="delta_second">1フレームあたりの時間</param>
 void Koopa::AnimationControl(float delta_second)
 {
+	anim_count += delta_second;
 
+	if (anim_count >= 0.1f)
+	{
+		if (image == animation1[0])
+		{
+			image = animation1[1];
+		}
+		else if (image == animation1[1])
+		{
+			image = animation1[0];
+		}
+		anim_count = 0;
+	}
 }
 
 /// <summary>

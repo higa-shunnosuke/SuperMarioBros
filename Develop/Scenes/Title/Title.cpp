@@ -1,6 +1,7 @@
 #include "Title.h"
 #include "DxLib.h"
 
+// コンストラクタ
 Title::Title() :
 	back_ground_image(NULL),
 	top(NULL),
@@ -10,11 +11,13 @@ Title::Title() :
 
 }
 
+// デストラクタ
 Title::~Title()
 {
 
 }
 
+// 初期化処理
 void Title::Initialize()
 {
 	// 親クラスの初期化処理を呼び出す
@@ -28,6 +31,7 @@ void Title::Initialize()
 	player = rm->GetImages("Resource/Images/Mario/mario.png", 9, 9, 1, 32, 32);
 }
 
+// 更新処理
 eSceneType Title::Update(const float& delta_second)
 {
 	// 入力情報を取得
@@ -50,11 +54,14 @@ eSceneType Title::Update(const float& delta_second)
 	return __super::Update(delta_second);
 }
 
+// 描画処理
 void Title::Draw() const
 {
 	// 背景画像の描画
 	DrawRotaGraph(D_WIN_MAX_X/2, D_WIN_MAX_Y/2, 1.0, 0.0, back_ground_image, TRUE);
-	// UIの描画
+
+	/*************************　UIの描画　***************************/
+
 	// スコアの描画
 	for (int i = 0; i < 6; i++)
 	{
@@ -89,12 +96,14 @@ void Title::Draw() const
 
 }
 
+// 終了処理
 void Title::Finalize()
 {
 	// 親クラスの終了時処理を呼び出す
 	__super::Finalize();
 }
 
+// 現在のシーンタイプ取得処理
 const eSceneType Title::GetNowSceneType() const
 {
 	return eSceneType::title;

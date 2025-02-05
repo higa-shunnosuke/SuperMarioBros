@@ -14,6 +14,7 @@
 
 #define PLAYER_INITIAL_LOCATION 3 // プレイヤー初期位置(何ブロック目）
 
+// コンストラクタ
 InGame::InGame() :
 	score(0),
 	num(NULL),
@@ -27,11 +28,14 @@ InGame::InGame() :
 	
 }
 
+// デストラクタ
 InGame::~InGame()
 {
-
+	// 解放忘れ防止
+	Finalize();
 }
 
+// 初期化処理
 void InGame::Initialize()
 {
 	// 親クラスの初期化処理を呼び出す
@@ -57,8 +61,8 @@ void InGame::Initialize()
 	cloud_image[4] = rm->GetImages("Resource/Images/cloud5.png")[0];
 	cloud_image[5] = rm->GetImages("Resource/Images/cloud6.png")[0];
 
-	// カメラの生成
-	camera = new Camera;
+	// カメラの情報を取得
+	camera = Camera::GetInstance();
 
 	// マップデータ読み込み生成処理
 	LoadStage();
@@ -70,13 +74,12 @@ void InGame::Initialize()
 	// プレイヤー情報をカメラに渡す
 	camera->SetPlayer(player);
 	player->SetCamera(camera);
+
 	// カメラの初期化
 	camera->Initialize();
-	// カメラの情報を親クラスに渡す
-	__super::SetCamera(camera);
-
 }
 
+// 更新処理
 eSceneType InGame::Update(const float& delta_second)
 {
 	// 入力情報を取得
@@ -106,12 +109,12 @@ eSceneType InGame::Update(const float& delta_second)
 	return __super::Update(delta_second);
 }
 
+// 描画処理
 void InGame::Draw() const
 {
+	// 背景csvファイル読込み
 	FILE* fp = NULL;
 	std::string file_name = "Resource/Map/Back.csv";
-	// BackGround
-	// back
 
 	// 指定されたファイルを開く
 	errno_t result = fopen_s(&fp, file_name.c_str(), "r");
@@ -122,8 +125,9 @@ void InGame::Draw() const
 		throw (file_name + "が開けません");
 	}
 
-	int x = 0;
-	int y = 0;
+	// カウント用変数
+	int x = 0;			// 列
+	int y = 0;			// 行
 
 	// ファイル内の文字を確認していく
 	while (true)
@@ -237,7 +241,8 @@ void InGame::Draw() const
 	// 親クラスの描画処理を呼び出す
 	__super::Draw();
 
-	// UIの描画
+	/*************************　UIの描画　***************************/
+
 	// スコアの描画
 	for (int i = 0; i < 6; i++)
 	{
@@ -270,6 +275,7 @@ void InGame::Draw() const
 
 }
 
+// 終了処理
 void InGame::Finalize()
 {
 	// 親クラスの終了時処理を呼び出す
@@ -277,10 +283,9 @@ void InGame::Finalize()
 
 	// プレイヤーの削除
 	object->DestroyObject(player);
-
-
 }
 
+// 現在のシーンタイプ情報を取得する
 const eSceneType InGame::GetNowSceneType() const
 {
 	return eSceneType::in_game;
@@ -289,12 +294,11 @@ const eSceneType InGame::GetNowSceneType() const
 // ステージ生成処理
 void InGame::LoadStage()
 {
+	// オブジェクトマネージャーのポインタ
 	GameObjectManager* object = GameObjectManager::GetInstance();
 	
 	FILE* fp = NULL;
 	std::string file_name = "Resource/Map/Stage.csv";
-	// BackGround
-	// back
 
 	// 指定されたファイルを開く
 	errno_t result = fopen_s(&fp, file_name.c_str(), "r");
@@ -305,8 +309,9 @@ void InGame::LoadStage()
 		throw (file_name + "が開けません");
 	}
 
-	int x = 0;
-	int y = 0;
+	// カウント用変数
+	int x = 0;			// 列
+	int y = 0;			// 行
 
 	// ファイル内の文字を確認していく
 	while (true)
@@ -327,6 +332,7 @@ void InGame::LoadStage()
 		// 抽出した文字が空白文字なら、生成しないで次の文字を見に行く
 		else if (c == ' ')
 		{
+			x++;
 			break;
 		}
 		// 抽出した文字が改行文字なら、次の行を見に行く
@@ -335,30 +341,58 @@ void InGame::LoadStage()
 			x = 0;
 			y++;
 		}
+		// 抽出した文字が0なら、生成しないで次の文字を見に行く
 		else if (c == '0')
 		{
 			x++;
 		}
+		// 抽出した文字がFなら、床ブロックを生成する
 		else if (c == 'F')
 		{
-			object->CreateObject<Floor>(Vector2D(location.x, location.y));
+			Floor* floor;
+			floor = object->CreateObject<Floor>(Vector2D(location.x, location.y));
+
+			c = fgetc(fp);
+			switch (c)
+			{
+			case 'g':
+				break;
+
+			case 'u':
+				break;
+			}
 			x++;
 		}
+		// 抽出した文字がHなら、はてなブロックを生成する
 		else if (c == 'H')
 		{
 			object->CreateObject<Hatena>(Vector2D(location.x, location.y));
 			x++;
 		}
+		// 抽出した文字がBなら、レンガブロックを生成する
 		else if (c == 'B')
 		{
-			object->CreateObject<Block>(Vector2D(location.x, location.y));
+			Block* block;
+			block = object->CreateObject<Block>(Vector2D(location.x, location.y));
+
+			c = fgetc(fp);
+			switch (c)
+			{
+			case 'g':
+					break;
+
+			case 'u':
+				break;
+			}
 			x++;
 		}
+		// 抽出した文字がSなら、階段ブロックを生成する
 		else if (c == 'S')
 		{
 			object->CreateObject<Stairs>(Vector2D(location.x, location.y));
 			x++;
 		}
+		// 抽出した文字がWなら、土管を生成する
 		else if (c == 'W')
 		{
 			WaterPipes* pipe;
@@ -379,9 +413,28 @@ void InGame::LoadStage()
 			case '3':
 				pipe->SetType(ePipeType::RIGHT_UP);
 				break;
+			case '4':
+				pipe->SetType(ePipeType::RIGHT_UP);
+				break;
+			case '5':
+				pipe->SetType(ePipeType::RIGHT_UP);
+				break;
+			case '6':
+				pipe->SetType(ePipeType::RIGHT_UP);
+				break;
+			case '7':
+				pipe->SetType(ePipeType::RIGHT_UP);
+				break;
+			case '8':
+				pipe->SetType(ePipeType::RIGHT_UP);
+				break;
+			case '9':
+				pipe->SetType(ePipeType::RIGHT_UP);
+				break;
 			}
 			x++;
 		}
+		// 抽出した文字がGなら、ゴールを生成する
 		else if (c == 'G')
 		{
 			Goal* goal;
@@ -403,6 +456,7 @@ void InGame::LoadStage()
 			}
 			x++;
 		}
+		// 抽出した文字がEなら、エネミーを生成する
 		else if (c == 'E')
 		{
 			c = fgetc(fp);

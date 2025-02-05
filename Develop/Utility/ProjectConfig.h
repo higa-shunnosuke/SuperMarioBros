@@ -12,8 +12,10 @@
 #define D_WIN_MAX_Y		(480)	// スクリーンサイズ（高さ）
 #define D_COLOR_BIT		(32)	// カラービット
 #define BOX_SIZE		(32)	// カラービット
+#define STAGE_SIZE_X	(210)	// ステージの横幅（ブロック数）
+#define STAGE_SIZE_Y	(15)	// ステージの縦幅（ブロック数）
 
-//#define DEBUG
+//#define DEBUG		// デバックフラグ
 
 /**********************************************************
 * プロトタイプ宣言

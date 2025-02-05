@@ -9,7 +9,9 @@ private:
 	SceneBase* current_scene;	// 現在のシーン情報
 
 public:
+	// コンストラクタ
 	SceneManager();
+	// デストラクタ
 	~SceneManager();
 
 	/// <summary>
@@ -18,8 +20,9 @@ public:
 	void Initialize();
 
 	/// <summary>
-	///  実行処理
+	/// 更新処理
 	/// </summary>
+	/// <param name="delta_second">1フレームあたりの時間</param>
 	void Update(float delta_second);
 
 	/// <summary>

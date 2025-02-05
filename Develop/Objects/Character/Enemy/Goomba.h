@@ -7,6 +7,8 @@ class Goomba : public Character
 {
 private:
 	std::vector<int> animation1;		//移動のアニメーション画像
+	bool is_hit;   // 一度当たった状態かどうか
+
 public:
 	Goomba();
 	~Goomba();

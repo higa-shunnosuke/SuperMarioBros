@@ -19,6 +19,8 @@ protected:
 	bool direction;
 	bool is_death;					//éÄÇÒÇ≈Ç¢ÇÈÇ©ÅH
 
+	float anim_count;
+
 public:
 	Character() :
 		image(),
@@ -27,7 +29,8 @@ public:
 		hit_point(),
 		on_ground(false),
 		direction(false),
-		is_death()
+		is_death(),
+		anim_count(0)
 	{
 
 	}

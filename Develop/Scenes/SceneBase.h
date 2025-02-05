@@ -17,11 +17,11 @@
 /// </summary>
 enum class eSceneType
 {
-	title,
-	in_game,
-	re_start,
-	result,
-	exit,
+	title,		// タイトル
+	in_game,	// インゲーム
+	re_start,	// リスタート
+	result,		// リザルト
+	exit,		// 終了
 };
 
 /// <summary>
@@ -42,11 +42,12 @@ protected:
 	float animation_time;				// アニメーション時間
 	int animation_count;				// アニメーション添字
 	GameObjectManager* object;			// オブジェクトマネージャーのポインタ
-	InputEventManager* input_event;		// インプットイベントの情報
-	Camera* camera;						// カメラの情報
+	InputEventManager* input_event;		// インプットイベントのポインタ
+	Camera* camera;						// カメラのポインタ
 
 
 public:
+	// コンストラクタ
 	SceneBase() :
 		back_ground_sound(NULL),
 		name_mario(NULL),
@@ -64,6 +65,7 @@ public:
 	{
 		
 	}
+	// デストラクタ
 	virtual ~SceneBase()
 	{
 		// 解放忘れ防止
@@ -76,6 +78,9 @@ public:
 	/// </summary>
 	virtual void Initialize()
 	{
+		// カメラの情報を取得
+		camera = Camera::GetInstance();
+
 		// オブジェクトマネージャーの情報を取得
 		object = GameObjectManager::GetInstance();
 
@@ -88,6 +93,7 @@ public:
 		coin_animation_1 = rm->GetImages("Resource/Images/UI/uicoin.png", 4, 4, 1, 16, 16);
 		coin_animation_2 = rm->GetImages("Resource/Images/UI/uicoin_1.png", 4, 4, 1, 16, 16);
 
+		// シーンがリザルトのとき読み込む画像を変更
 		if (GetNowSceneType() != eSceneType::result)
 		{
 			coin_image = coin_animation_1[0];
@@ -120,7 +126,7 @@ public:
 			obj->Update(delta_second);
 		}
 
-		// 破棄リスト内が空でない場合、リスト内のオブジェクトを破棄する
+		// デストロイリストの更新
 		object->CheckDestroyObject();
 
 		// 現在のシーン情報を返却する
@@ -137,6 +143,8 @@ public:
 		{
 			obj->Draw(camera->GetCameraPos());
 		}
+
+		/*****************　UIの描画　************************/
 
 		// 操作キャラ名の描画
 		DrawRotaGraph(125, 35, 1.1, 0.0, name_mario, TRUE);
@@ -159,7 +167,7 @@ public:
 		// 入力イベントの削除
 		input_event->AllUnbind();
 
-		// オブジェクトリスト内のオブジェクトを破棄する
+		// オブジェクトリスト内のオブジェクトを破棄
 		object->DestroyAllObject();
 	}
 
@@ -168,12 +176,6 @@ public:
 	/// </summary>
 	/// <returns>現在のシーンタイプ情報</returns>
 	virtual const eSceneType GetNowSceneType() const = 0;
-
-	// カメラ情報を取得
-	void SetCamera(Camera* camera)
-	{
-		this->camera = camera;
-	}
 
 protected:
 	/// <summary>
