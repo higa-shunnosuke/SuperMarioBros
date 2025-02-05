@@ -5,19 +5,20 @@
 ///<summary>
 ///停止状態
 ///</summary>
-class Nomal :public PlayerStateBase
+class Tibi :public PlayerStateBase
 {
 private:
+
 
 public:
 	///<summary>
 	///コンストラクタ
 	///</summary>
 	///<param name="p">プレイヤー情報</param>
-	Nomal(class Player* p);
+	Tibi(class Player* p);
 
 	//デストラクタ
-	virtual ~Nomal();
+	virtual ~Tibi();
 
 public:
 	//初期化処理

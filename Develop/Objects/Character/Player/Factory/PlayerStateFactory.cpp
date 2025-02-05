@@ -3,6 +3,7 @@
 #include "../State/Nomal.h"
 #include "../State/Super.h"
 #include "../State/Fire.h"
+#include "../State/Tibi.h"
 
 #include "../Player.h"
 
@@ -13,6 +14,7 @@ void PlayerStateFactory::Initialize(class Player& player)
 	nomal = new Nomal(&player);
 	super = new Super(&player);
 	fire = new Fire(&player);
+	tibi = new Tibi(&player);
 }
 
 void PlayerStateFactory::Finalize()
@@ -20,10 +22,12 @@ void PlayerStateFactory::Finalize()
 	instance->nomal->Finalize();
 	instance->super->Finalize();
 	instance->fire->Finalize();
+	instance->tibi->Finalize();
 
 	delete instance->nomal;
 	delete instance->super;
 	delete instance->fire;
+	delete instance->tibi;
 
 	instance = nullptr;
 }
@@ -50,6 +54,10 @@ PlayerStateBase* PlayerStateFactory::Get(class Player& player, ePlayerState stat
 	case ePlayerState::FIRE:
 		instance->fire->Initialize();
 		ret = instance->fire;
+		break;
+	case ePlayerState::TIBI:
+		instance->tibi->Initialize();
+		ret = instance->tibi;
 		break;
 	case ePlayerState::NONE:	//•Ô‚·‚à‚Ì‚È‚µ
 	default:

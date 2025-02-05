@@ -1,7 +1,8 @@
 #include "Goomba.h"
 
 Goomba::Goomba():
-	camera()
+	camera(),
+	is_hit(false)
 {
 
 }
@@ -36,6 +37,7 @@ void Goomba::Initialize()
 
 void Goomba::Update(float delta_second)
 {
+	is_hit = false;
 
 	if (on_ground == true)
 	{
@@ -203,6 +205,16 @@ void Goomba::OnHitCollision(GameObject* hit_object)
 		{
 			velocity = 0;
 			image = animation1[2];
+		}
+	}
+
+	// エネミーに当たったとき
+	if (hc.object_type == eObjectType::eEnemy)
+	{
+		if (is_hit == false)
+		{
+			velocity.x = -velocity.x;
+			is_hit = true;
 		}
 	}
 }

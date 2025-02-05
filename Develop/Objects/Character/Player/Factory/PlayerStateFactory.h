@@ -18,6 +18,7 @@ private:
 	class Nomal* nomal;
 	class Super* super;
 	class Fire* fire;
+	class Tibi* tibi;
 
 private:
 	void Initialize(class Player& player);

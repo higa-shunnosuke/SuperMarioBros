@@ -139,6 +139,7 @@
     <ClCompile Include="Objects\Block\Hatena.cpp" />
     <ClCompile Include="Objects\Block\Block.cpp" />
     <ClCompile Include="Objects\Block\Stairs.cpp" />
+    <ClCompile Include="Objects\Character\Player\State\Tibi.cpp" />
     <ClCompile Include="Objects\Block\UnderBlock.cpp" />
     <ClCompile Include="Objects\Block\UnderFloor.cpp" />
     <ClCompile Include="Utility\StageData.cpp" />
@@ -171,6 +172,7 @@
     <ClInclude Include="Objects\Block\Hatena.h" />
     <ClInclude Include="Objects\Block\Block.h" />
     <ClInclude Include="Objects\Block\Stairs.h" />
+    <ClInclude Include="Objects\Character\Player\State\Tibi.h" />
     <ClInclude Include="Objects\Block\UnderBlock.h" />
     <ClInclude Include="Objects\Block\UnderFloor.h" />
     <ClInclude Include="Utility\StageData.h" />
