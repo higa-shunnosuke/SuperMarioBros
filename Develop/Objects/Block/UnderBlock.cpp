@@ -1,20 +1,20 @@
-#include "Hatena.h"
+#include "UnderBlock.h"
 
-Hatena::Hatena()
+UnderBlock::UnderBlock()
 {
 
 }
 
-Hatena::~Hatena()
+UnderBlock::~UnderBlock()
 {
 
 }
 
-void Hatena::Initialize()
+void UnderBlock::Initialize()
 {
 	// 画像の読み込み
 	ResourceManager* rm = ResourceManager::GetInstance();
-	image = rm->GetImages("Resource/Images/Block/hatena.png",4,4,1,32,32)[0];
+	image = rm->GetImages("Resource/Images/Block/blackblock.png")[0];
 
 	is_mobility = false;
 
@@ -26,18 +26,18 @@ void Hatena::Initialize()
 
 }
 
-void Hatena::Update(float delta_second)
+void UnderBlock::Update(float delta_second)
 {
 
 }
 
-void Hatena::Draw(const Vector2D camera_pos) const
+void UnderBlock::Draw(const Vector2D camera_pos) const
 {
 	Vector2D position = this->GetLocation();
 	position.x -= camera_pos.x - D_WIN_MAX_X / 2;
 	position.y += camera_pos.y - D_WIN_MAX_Y / 2;
 
-	// ハテナブロックの描画
+	// レンガの描画
 	DrawRotaGraph(position.x, position.y, 1.0, 0.0, image, TRUE);
 
 #ifdef DEBUG
@@ -47,7 +47,7 @@ void Hatena::Draw(const Vector2D camera_pos) const
 #endif
 }
 
-void Hatena::Finalize()
+void UnderBlock::Finalize()
 {
 
 }

@@ -26,18 +26,29 @@ void Camera::Initialize()
 // 更新処理
 void Camera::Update()
 {
-	// プレイヤーを追う処理
-	if (player->GetLocation().x >= this->location.x)
+	if (player->GetIsUg() == true)
 	{
-		this->location.x = player->GetLocation().x;
+		location.x = 1776.0f;
+		location.y = -272.0f;
 	}
 	else
 	{
-		// DEBUGフラグ = TRUE   : プレイヤーが戻るとカメラも追従する
-		// DEBUGフラグ = FARUSE : プレイヤーが戻るとカメラは追従しない
+		this->location.y = D_WIN_MAX_Y / 2;
+
+		// プレイヤーを追う処理
+		if (player->GetLocation().x >= this->location.x)
+		{
+			this->location.x = player->GetLocation().x;
+		}
+		else
+		{
+			// DEBUGフラグ = TRUE   : プレイヤーが戻るとカメラも追従する
+			// DEBUGフラグ = FARUSE : プレイヤーが戻るとカメラは追従しない
 #ifdef DEBUG
-		location.x = player->GetLocation().x;
+			location.x = player->GetLocation().x;
+			//location.y = -player->GetLocation().y + D_WIN_MAX_Y;
 #endif
+		}
 	}
 
 	//ステージ外にいかないようにする処理

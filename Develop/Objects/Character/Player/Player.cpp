@@ -2,6 +2,7 @@
 #include "Factory/PlayerStateFactory.h"
 #include "../../../Utility/Input/InputEventManager.h"
 #include "../../../Utility/Camera/Camera.h"
+#include "../../Block/WarpBox.h"
 
 #define D_PLAYER_SPEED 400.0f
 
@@ -11,7 +12,8 @@ Player::Player() :
 	state(nullptr),
 	next_state(ePlayerState::NONE),
 	friction(0.0f),
-	camera(nullptr)
+	camera(nullptr),
+	is_ug(false)
 {
 
 }
@@ -43,10 +45,12 @@ void Player::Initialize()
 	collision.hit_object_type.push_back(eObjectType::eEnemy);
 	collision.hit_object_type.push_back(eObjectType::eBlock);
 	collision.hit_object_type.push_back(eObjectType::eItem);
+	collision.hit_object_type.push_back(eObjectType::eWarp);
 }
 
 void Player::Update(float delta_second)
 {
+
 	//当たり判定の設定
 	collision.box_size = state->GetPlayerSize();
 
@@ -89,12 +93,15 @@ void Player::Update(float delta_second)
 		location.x = left;
 	}
 
-	// 画面外に落ちると死ぬ
-	if (D_WIN_MAX_Y < location.y)
+	if (is_ug == false)
 	{
-		is_death = true;
-		location.y = D_WIN_MAX_Y;
-		on_ground = true;
+		//// 画面外に落ちると死ぬ
+		//if (D_WIN_MAX_Y < location.y)
+		//{
+		//	is_death = true;
+		//	location.y = D_WIN_MAX_Y;
+		//	on_ground = true;
+		//}
 	}
 }
 
@@ -102,6 +109,8 @@ void Player::Draw(const Vector2D camera_pos) const
 {
 	//状態別の描画処理を行う
 	state->Draw(camera_pos);
+
+	DrawFormatString(490, 90, 0xffffff, ":%d", is_ug);
 
 #ifdef DEBUG
 	// 座標表示
@@ -111,18 +120,30 @@ void Player::Draw(const Vector2D camera_pos) const
 	DrawFormatString(250, 120, 0xffffff, "VY:%f", velocity.y);
 	DrawFormatString(490, 90, 0xffffff, ":%d", on_ground);
 
+	float diff_x = camera_pos.x - location.x;
+	float diff_y = camera_pos.y + location.y - D_WIN_MAX_Y / 2;
+
 	// 当たり判定表示
-	if (camera_pos.x <= location.x)
+	if (is_ug == true)
 	{
-		DrawBox(D_WIN_MAX_X / 2 - collision.box_size.x / 2, location.y - collision.box_size.y / 2,
-				D_WIN_MAX_X / 2 + collision.box_size.x / 2, location.y + collision.box_size.y / 2, 0xff0000, FALSE);
+		DrawBox((D_WIN_MAX_X / 2) - diff_x - collision.box_size.x / 2, diff_y - collision.box_size.y / 2,
+			(D_WIN_MAX_X / 2) - diff_x + collision.box_size.x / 2, diff_y + collision.box_size.y / 2, 0xff0000, FALSE);
 	}
 	else
 	{
-		float diff = camera_pos.x - location.x;
-		DrawBox((D_WIN_MAX_X / 2) - diff - collision.box_size.x / 2, location.y - collision.box_size.y / 2,
-				(D_WIN_MAX_X / 2) - diff + collision.box_size.x / 2, location.y + collision.box_size.y / 2, 0xff0000, FALSE);
+		if (camera_pos.x <= location.x)
+		{
+			DrawBox(D_WIN_MAX_X / 2 - collision.box_size.x / 2, diff_y - collision.box_size.y / 2,
+				D_WIN_MAX_X / 2 + collision.box_size.x / 2, diff_y + collision.box_size.y / 2, 0xff0000, FALSE);
+		}
+		else
+		{
+
+			DrawBox((D_WIN_MAX_X / 2) - diff_x - collision.box_size.x / 2, diff_y - collision.box_size.y / 2,
+				(D_WIN_MAX_X / 2) - diff_x + collision.box_size.x / 2, diff_y + collision.box_size.y / 2, 0xff0000, FALSE);
+		}
 	}
+	
 #endif
 
 }
@@ -238,6 +259,30 @@ void Player::OnHitCollision(GameObject* hit_object)
 			}
 		}
 	}
+
+	// 当たった、オブジェクトがワープブロックだったら
+	if (hc.object_type == eObjectType::eWarp)
+	{
+		// 入力情報を取得
+		InputManager* input = InputManager::GetInstance();
+
+		if (dynamic_cast<WarpBox*>(hit_object)->GetPairNo() == 1)
+		{
+			// 地下フラグをTrueにする
+			if (input->GetKeyState(KEY_INPUT_S) == eInputState::Pressed)
+			{
+				is_ug = true;
+			}
+		}
+		else if(dynamic_cast<WarpBox*>(hit_object)->GetPairNo() == 2)
+		{
+			// 地下フラグをFalseにする
+			if (input->GetKeyState(KEY_INPUT_D) == eInputState::Pressed)
+			{
+				is_ug = false;
+			}
+		}
+	}
 }
 
 ///<summary>
@@ -312,4 +357,15 @@ bool Player::GetIsDeath()
 void Player::SetCamera(Camera* camera)
 {
 	this->camera = camera;
+}
+
+bool Player::GetIsUg()
+{
+	return is_ug;
+}
+
+//ワープ処理
+void Player::Warp(Vector2D location)
+{
+	this->location = location;
 }
