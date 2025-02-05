@@ -61,24 +61,30 @@ void Nomal::Draw(const Vector2D camera_pos) const
 {
 	// プレイヤーの座標を取得
 	Vector2D location = player->GetLocation();
+	float diff_x = location.x - camera_pos.x + D_WIN_MAX_Y / 2 + 80;
+	float diff_y = camera_pos.y + location.y - D_WIN_MAX_Y / 2;
 
 	// プレイヤーの描画
-	if (camera_pos.x == 6400)
+	if (player->GetIsUg() == true)
 	{
-		float diff = location.x - camera_pos.x;
-		DrawRotaGraph(D_WIN_MAX_X / 2 + diff, location.y, 1.0, 0.0, animation[0], TRUE);
-
+		DrawRotaGraph(diff_x, diff_y, 1.0, 0.0, animation[0], TRUE);
 	}
 	else
 	{
-		if (camera_pos.x <= location.x)
+		if (camera_pos.x == 6400)
 		{
-			DrawRotaGraph(D_WIN_MAX_X / 2, location.y, 1.0, 0.0, animation[0], TRUE);
+			DrawRotaGraph(diff_x, diff_y, 1.0, 0.0, animation[0], TRUE);
 		}
 		else
 		{
-			float diff = camera_pos.x - location.x;
-			DrawRotaGraph((D_WIN_MAX_X / 2) - diff, location.y, 1.0, 0.0, animation[0], TRUE);
+			if (diff_x > D_WIN_MAX_X / 2)
+			{
+				DrawRotaGraph(D_WIN_MAX_X / 2, diff_y, 1.0, 0.0, animation[0], TRUE);
+			}
+			else
+			{
+				DrawRotaGraph(diff_x, diff_y, 1.0, 0.0, animation[0], TRUE);
+			}
 		}
 	}
 }

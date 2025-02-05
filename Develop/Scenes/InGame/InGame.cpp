@@ -7,12 +7,15 @@
 #include "../../Objects/Block/Hatena.h"
 #include "../../Objects/Block/Stairs.h"
 #include "../../Objects/Block/WaterPipes.h"
+#include "../../Objects/Block/WarpBox.h"
 #include "../../Objects/Block/Goal.h"
+#include "../../Objects/Block/UnderBlock.h"
+#include "../../Objects/Block/UnderFloor.h"
 #include "../../Objects/Character/Enemy/Koopa.h"
 #include "../../Objects/Character/Enemy/Goomba.h"
 #include "../../Utility/StageData.h"
 
-#define PLAYER_INITIAL_LOCATION 90 // プレイヤー初期位置(何ブロック目）
+#define PLAYER_INITIAL_LOCATION 50 // プレイヤー初期位置(何ブロック目）
 
 // コンストラクタ
 InGame::InGame() :
@@ -134,8 +137,8 @@ void InGame::Draw() const
 	{
 		//描画する座標を計算
 		Vector2D location;
-		location.x = (float)(x * BOX_SIZE) + D_WIN_MAX_X / 2 - camera->GetCameraPos().x + BOX_SIZE / 2;
-		location.y = (float)(y * BOX_SIZE + BOX_SIZE/2);
+		location.x = (float)(x * BOX_SIZE + D_WIN_MAX_X / 2) - camera->GetCameraPos().x + BOX_SIZE / 2;
+		location.y = (float)(y * BOX_SIZE + BOX_SIZE/2) + camera->GetCameraPos().y - D_WIN_MAX_Y / 2;
 
 		// ファイルから1文字抽出する
 		int c = fgetc(fp);
@@ -266,6 +269,9 @@ void InGame::Draw() const
 		DrawRotaGraph(514 + (i * 19), 55, 1.1, 0.0, num[0], TRUE);
 	}
 
+	DrawFormatString(10, 150, 0xffffff, "x:%f",camera->GetCameraPos().x);
+	DrawFormatString(250, 150, 0xffffff, "y:%f",camera->GetCameraPos().y);
+
 	SetFontSize(16);
 	DrawFormatString(10, 80, 0xffffff, "A:左移動");
 	DrawFormatString(100, 80, 0xffffff, "D:右移動");
@@ -312,6 +318,10 @@ void InGame::LoadStage()
 	// カウント用変数
 	int x = 0;			// 列
 	int y = 0;			// 行
+	WarpBox* warp1e = nullptr;
+	WarpBox* warp1s = nullptr;
+	WarpBox* warp2e = nullptr;
+	WarpBox* warp2s = nullptr;
 
 	// ファイル内の文字を確認していく
 	while (true)
@@ -349,16 +359,15 @@ void InGame::LoadStage()
 		// 抽出した文字がFなら、床ブロックを生成する
 		else if (c == 'F')
 		{
-			Floor* floor;
-			floor = object->CreateObject<Floor>(Vector2D(location.x, location.y));
-
 			c = fgetc(fp);
 			switch (c)
 			{
 			case 'g':
+				object->CreateObject<Floor>(Vector2D(location.x, location.y));
 				break;
 
 			case 'u':
+				object->CreateObject<UnderFloor>(Vector2D(location.x, location.y));
 				break;
 			}
 			x++;
@@ -372,16 +381,15 @@ void InGame::LoadStage()
 		// 抽出した文字がBなら、レンガブロックを生成する
 		else if (c == 'B')
 		{
-			Block* block;
-			block = object->CreateObject<Block>(Vector2D(location.x, location.y));
-
 			c = fgetc(fp);
 			switch (c)
 			{
 			case 'g':
+				object->CreateObject<Block>(Vector2D(location.x, location.y));
 					break;
 
 			case 'u':
+				object->CreateObject<UnderBlock>(Vector2D(location.x, location.y));
 				break;
 			}
 			x++;
@@ -414,24 +422,74 @@ void InGame::LoadStage()
 				pipe->SetType(ePipeType::RIGHT_UP);
 				break;
 			case '4':
-				pipe->SetType(ePipeType::RIGHT_UP);
+				pipe->SetType(ePipeType::LIE_LEFT_UP);
 				break;
 			case '5':
-				pipe->SetType(ePipeType::RIGHT_UP);
+				pipe->SetType(ePipeType::LIE_MIDDLE_UP);
 				break;
 			case '6':
-				pipe->SetType(ePipeType::RIGHT_UP);
+				pipe->SetType(ePipeType::LIE_RIGHT_UP);
 				break;
 			case '7':
-				pipe->SetType(ePipeType::RIGHT_UP);
+				pipe->SetType(ePipeType::LIE_LEFT_DOWN);
 				break;
 			case '8':
-				pipe->SetType(ePipeType::RIGHT_UP);
+				pipe->SetType(ePipeType::LIE_MIDDLE_DOWN);
 				break;
 			case '9':
-				pipe->SetType(ePipeType::RIGHT_UP);
+				pipe->SetType(ePipeType::LIE_RIGHT_DOWN);
 				break;
 			}
+			x++;
+		}
+		else if (c == 'T')
+		{
+			c = fgetc(fp);
+			if (c == '1')
+			{
+				c = fgetc(fp);
+
+				if (c == 'e')
+				{
+					warp1e = object->CreateObject<WarpBox>(Vector2D(location.x, location.y));
+					warp1e->SetPaier(1);
+					warp1e->SetType(eWarpType::ENTRANCE);
+				}
+				else if(c == 's')
+				{
+					warp1s = object->CreateObject<WarpBox>(Vector2D(location.x, location.y));
+					warp1s->SetPaier(1);
+					warp1s->SetType(eWarpType::EXit);
+				}
+			}
+			else if (c == '2')
+			{
+				c = fgetc(fp);
+
+				if (c == 'e')
+				{
+					warp2e = object->CreateObject<WarpBox>(Vector2D(location.x, location.y));
+					warp2e->SetPaier(2);
+					warp2e->SetType(eWarpType::ENTRANCE);
+				}
+				else if (c == 's')
+				{
+					warp2s = object->CreateObject<WarpBox>(Vector2D(location.x, location.y));
+					warp2s->SetPaier(2);
+					warp2s->SetType(eWarpType::EXit);
+				}
+			}
+
+			if (warp1s != nullptr && warp1e != nullptr)
+			{
+				warp1e->SetExit(warp1s->GetLocation());
+			}
+
+			if (warp2s != nullptr && warp2e != nullptr)
+			{
+				warp2e->SetExit(warp2s->GetLocation());
+			}
+
 			x++;
 		}
 		// 抽出した文字がGなら、ゴールを生成する
@@ -474,6 +532,10 @@ void InGame::LoadStage()
 				koopa->SetCamera(camera);
 				break;
 			}
+			x++;
+		}
+		else if (c == 'C')
+		{
 			x++;
 		}
 	}

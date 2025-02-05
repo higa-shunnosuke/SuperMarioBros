@@ -28,7 +28,7 @@ private:
 	ePlayerState next_state;		//次の状態
 	float friction;					//摩擦
 	Camera* camera;					//カメラ情報
-	
+	bool is_ug;						//地下にいるか
 
 public:
 	Player();	//初期位置 0, 速度 1
@@ -115,4 +115,13 @@ public:
 	/// カメラの情報を取得
 	/// </summary>
 	void SetCamera(Camera* camera);
+
+	/// <summary>
+	/// 地下フラグ取得処理
+	/// </summary>
+	/// <returns>地下フラグ</returns>
+	bool GetIsUg();
+
+	
+	void Warp(Vector2D location);
 };

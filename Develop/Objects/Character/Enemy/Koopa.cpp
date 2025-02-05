@@ -74,6 +74,7 @@ void Koopa::Draw(const Vector2D camera_pos) const
 {
 	Vector2D position = this->GetLocation();
 	position.x -= camera_pos.x - D_WIN_MAX_X / 2;
+	position.y += camera_pos.y - D_WIN_MAX_Y / 2;
 
 	// ÉmÉRÉmÉRÇ™çbóÖèÛë‘Ç»ÇÁ
 	if (image == animation2[0] || image == animation2[1])
@@ -88,8 +89,8 @@ void Koopa::Draw(const Vector2D camera_pos) const
 
 #ifdef DEBUG
 	// ìñÇΩÇËîªíËï\é¶
-	DrawBox(position.x - collision.box_size.x / 2, location.y - collision.box_size.y / 2,
-		position.x + collision.box_size.x / 2, location.y + collision.box_size.y / 2, 0xff0000, FALSE);
+	DrawBox(position.x - collision.box_size.x / 2, position.y - collision.box_size.y / 2,
+		position.x + collision.box_size.x / 2, position.y + collision.box_size.y / 2, 0xff0000, FALSE);
 #endif
 }
 

@@ -73,14 +73,15 @@ void Goomba::Draw(const Vector2D camera_pos) const
 {
 	Vector2D position = this->GetLocation();
 	position.x -= camera_pos.x - D_WIN_MAX_X / 2;
+	position.y += camera_pos.y - D_WIN_MAX_Y / 2;
 
 	// クリボーの描画(画像めり込み防止のためy座標のみ-3.0fの補正値追加)
-	DrawRotaGraph(position.x, location.y-3.0f, 1.0, 0.0, image, TRUE);
+	DrawRotaGraph(position.x, position.y-3, 1.0, 0.0, image, TRUE);
 
 #ifdef DEBUG
 	// 当たり判定表示
-	DrawBox(position.x - collision.box_size.x / 2, location.y - collision.box_size.y / 2,
-		position.x + collision.box_size.x / 2, location.y + collision.box_size.y / 2, 0xff0000, FALSE);
+	DrawBox(position.x - collision.box_size.x / 2, position.y - collision.box_size.y / 2,
+		position.x + collision.box_size.x / 2, position.y + collision.box_size.y / 2, 0xff0000, FALSE);
 #endif
 }
 

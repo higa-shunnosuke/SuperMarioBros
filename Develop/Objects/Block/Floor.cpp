@@ -36,14 +36,15 @@ void Floor::Draw(const Vector2D camera_pos) const
 {
 	Vector2D position = this->GetLocation();
 	position.x -= camera_pos.x - D_WIN_MAX_X / 2;
+	position.y += camera_pos.y - D_WIN_MAX_Y / 2;
 
 	// è∞ÇÃï`âÊ
-	DrawRotaGraph(position.x, location.y, 1.0, 0.0, image, TRUE);
+	DrawRotaGraph(position.x, position.y, 1.0, 0.0, image, TRUE);
 
 #ifdef DEBUG
 	// ìñÇΩÇËîªíËï\é¶
-	DrawBox(position.x - collision.box_size.x / 2, location.y - collision.box_size.y / 2,
-		position.x + collision.box_size.x / 2, location.y + collision.box_size.y / 2, 0x00ff00, FALSE);
+	DrawBox(position.x - collision.box_size.x / 2, position.y - collision.box_size.y / 2,
+		position.x + collision.box_size.x / 2, position.y + collision.box_size.y / 2, 0x00ff00, FALSE);
 #endif
 }
 

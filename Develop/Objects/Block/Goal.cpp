@@ -34,25 +34,15 @@ void Goal::Draw(const Vector2D camera_pos) const
 {
 	Vector2D position = this->GetLocation();
 	position.x -= camera_pos.x - D_WIN_MAX_X / 2;
+	position.y += camera_pos.y - D_WIN_MAX_Y / 2;
 
 	// ÉSÅ[ÉãÇÃï`âÊ
-	switch (type)
-	{
-	case eGoalType::Flag:
-		DrawRotaGraph(position.x, location.y, 1.0, 0.0, image, TRUE);
-		break;
-	case eGoalType::Bool:
-		DrawRotaGraph(position.x, location.y, 1.0, 0.0, image, TRUE);
-		break;
-	case eGoalType::Pool:
-		DrawRotaGraph(position.x, location.y, 1.0, 0.0, image, TRUE);
-		break;
-	}
+	DrawRotaGraph(position.x, position.y, 1.0, 0.0, image, TRUE);
 
 #ifdef DEBUG
 	// ìñÇΩÇËîªíËï\é¶
-	DrawBox(position.x - collision.box_size.x / 2, location.y - collision.box_size.y / 2,
-		position.x + collision.box_size.x / 2, location.y + collision.box_size.y / 2, 0x00ff00, FALSE);
+	DrawBox(position.x - collision.box_size.x / 2, position.y - collision.box_size.y / 2,
+		position.x + collision.box_size.x / 2, position.y + collision.box_size.y / 2, 0x00ff00, FALSE);
 #endif
 }
 
