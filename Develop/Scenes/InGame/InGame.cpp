@@ -9,13 +9,14 @@
 #include "../../Objects/Block/WaterPipes.h"
 #include "../../Objects/Block/WarpBox.h"
 #include "../../Objects/Block/Goal.h"
+#include "../../Objects/Block/Castle.h"
 #include "../../Objects/Block/UnderBlock.h"
 #include "../../Objects/Block/UnderFloor.h"
 #include "../../Objects/Character/Enemy/Koopa.h"
 #include "../../Objects/Character/Enemy/Goomba.h"
 #include "../../Utility/StageData.h"
 
-#define PLAYER_INITIAL_LOCATION 50 // プレイヤー初期位置(何ブロック目）
+#define PLAYER_INITIAL_LOCATION 200 // プレイヤー初期位置(何ブロック目）
 
 // コンストラクタ
 InGame::InGame() :
@@ -153,11 +154,6 @@ void InGame::Draw() const
 		{
 			x = 0;
 			y++;
-		}
-		// 抽出した文字がBなら、描画しないで次の文字を見に行く
-		else if (c == 'B')
-		{
-			x++;
 		}
 		// 抽出した文字がSなら、空を描画
 		else if(c == 'S')
@@ -339,12 +335,6 @@ void InGame::LoadStage()
 		{
 			break;
 		}
-		// 抽出した文字が空白文字なら、生成しないで次の文字を見に行く
-		else if (c == ' ')
-		{
-			x++;
-			break;
-		}
 		// 抽出した文字が改行文字なら、次の行を見に行く
 		else if (c == '\n')
 		{
@@ -452,13 +442,13 @@ void InGame::LoadStage()
 				if (c == 'e')
 				{
 					warp1e = object->CreateObject<WarpBox>(Vector2D(location.x, location.y));
-					warp1e->SetPaier(1);
+					warp1e->SetPair(1);
 					warp1e->SetType(eWarpType::ENTRANCE);
 				}
 				else if(c == 's')
 				{
 					warp1s = object->CreateObject<WarpBox>(Vector2D(location.x, location.y));
-					warp1s->SetPaier(1);
+					warp1s->SetPair(1);
 					warp1s->SetType(eWarpType::EXit);
 				}
 			}
@@ -469,13 +459,13 @@ void InGame::LoadStage()
 				if (c == 'e')
 				{
 					warp2e = object->CreateObject<WarpBox>(Vector2D(location.x, location.y));
-					warp2e->SetPaier(2);
+					warp2e->SetPair(2);
 					warp2e->SetType(eWarpType::ENTRANCE);
 				}
 				else if (c == 's')
 				{
 					warp2s = object->CreateObject<WarpBox>(Vector2D(location.x, location.y));
-					warp2s->SetPaier(2);
+					warp2s->SetPair(2);
 					warp2s->SetType(eWarpType::EXit);
 				}
 			}
@@ -536,6 +526,17 @@ void InGame::LoadStage()
 		}
 		else if (c == 'C')
 		{
+			c = fgetc(fp);
+
+			switch (c)
+			{
+			case 'I':
+				
+				break;
+			case 'O':
+				object->CreateObject<Castle>(Vector2D(location.x, location.y));
+				break;
+			}
 			x++;
 		}
 	}

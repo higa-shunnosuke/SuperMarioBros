@@ -78,7 +78,7 @@ void WarpBox::OnHitCollision(GameObject* hit_object)
 	}
 }
 
-void WarpBox::SetPaier(int nomber)
+void WarpBox::SetPair(int nomber)
 {
 	this->pair_no = nomber;
 
@@ -88,7 +88,7 @@ void WarpBox::SetPaier(int nomber)
 	}
 	else
 	{
-		location += 16.0f;
+		location.x += 16.0f;
 	}
 }
 
@@ -100,6 +100,14 @@ int WarpBox::GetPairNo()
 void WarpBox::SetType(eWarpType type)
 {
 	this->type = type;
+
+	if (pair_no == 2)
+	{
+		if (type == eWarpType::EXit)
+		{
+			location.y += 32.0f;
+		}
+	}
 }
 
 eWarpType WarpBox::GetType()

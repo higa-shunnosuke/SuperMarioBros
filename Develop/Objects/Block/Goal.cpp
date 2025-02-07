@@ -20,7 +20,7 @@ void Goal::Initialize()
 	is_mobility = false;
 
 	collision.is_blocking = false;
-	collision.object_type = eObjectType::eItem;
+	collision.object_type = eObjectType::eGole;
 	collision.hit_object_type.push_back(eObjectType::ePlayer);
 
 }
@@ -67,7 +67,7 @@ void Goal::SetType(eGoalType type)
 		break;
 	case eGoalType::Bool:
 		image = rm->GetImages("Resource/Images/pole.png")[0];
-		collision.box_size = Vector2D(0.0f, 0.0f);
+		collision.box_size = Vector2D(20.0f, 32.0f);
 		break;
 	case eGoalType::Pool:
 		image = rm->GetImages("Resource/Images/pole_down.png")[0];

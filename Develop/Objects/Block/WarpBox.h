@@ -33,7 +33,7 @@ public:
 	/// ペア設定処理
 	/// </summary>
 	/// <param name="nomber">ペア番号</param>
-	void SetPaier(int nomber);
+	void SetPair(int nomber);
 
 	/// <summary>
 	/// ペア番号取得処理

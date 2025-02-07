@@ -11,6 +11,8 @@ enum class eObjectType : unsigned char
 	eEnemy,
 	eBlock,
 	eWarp,
+	eGole,
+	eCastle,
 	eItem
 };
 
