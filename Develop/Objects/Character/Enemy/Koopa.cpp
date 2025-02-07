@@ -79,12 +79,12 @@ void Koopa::Draw(const Vector2D camera_pos) const
 	// ノコノコが甲羅状態なら
 	if (image == animation2[0] || image == animation2[1])
 	{
-		DrawRotaGraph(position.x, location.y, 1.0, 0.0, image, TRUE);
+		DrawRotaGraph(position.x, position.y, 1.0, 0.0, image, TRUE);
 	}
 	// ノコノコが歩行状態なら
 	else
 	{
-		DrawRotaGraph(position.x, location.y - 12.0f, 1.0, 0.0, image, TRUE);
+		DrawRotaGraph(position.x, position.y - 12.0f, 1.0, 0.0, image, TRUE);
 	}
 
 #ifdef DEBUG
@@ -268,28 +268,28 @@ void Koopa::AnimationControl(float delta_second)
 {
 	anim_count += delta_second;
 
-	//// 甲羅状態のアニメーション
-	//if (is_shell == true)
-	//{
-	//	if (velocity.x == 0.0f)
-	//	{
-	//		if (anim_count >= 0.05f)
-	//		{
-	//			if (image == animation2[0])
-	//			{
-	//				image = animation2[1];
-	//			}
-	//			else if (image == animation2[1])
-	//			{
-	//				image = animation2[0];
-	//			}
-	//			anim_count = 0;
-	//		}
-	//	}
-	//}
+	// 甲羅状態のアニメーション
+	if (is_shell == true)
+	{
+		if (velocity.x == 0.0f)
+		{
+			if (anim_count >= 0.05f)
+			{
+				if (image == animation2[0])
+				{
+					image = animation2[1];
+				}
+				else if (image == animation2[1])
+				{
+					image = animation2[0];
+				}
+				anim_count = 0;
+			}
+		}
+	}
 	// 歩行状態のアニメーション
-	/*else
-	{*/
+	else
+	{
 		if (anim_count >= 0.1f)
 		{
 			if (image == animation1[0])
@@ -302,7 +302,7 @@ void Koopa::AnimationControl(float delta_second)
 			}
 			anim_count = 0;
 		}
-	//}
+	}
 }
 
 /// <summary>
