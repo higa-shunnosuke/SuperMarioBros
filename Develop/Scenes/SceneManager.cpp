@@ -143,6 +143,11 @@ void SceneManager::CheckCollision(GameObject* target, GameObject* partner)
 	Collision tc = target->GetCollision();
 	Collision pc = partner->GetCollision();
 
+	if (tc.is_blocking == false || pc.is_blocking == false)
+	{
+		return;
+	}
+
 	// “–‚½‚è”»’è‚ª—LŒø‚©Šm”F‚·‚é
 	if (tc.IsCheckHitTarget(pc.object_type) || pc.IsCheckHitTarget(tc.object_type))
 	{
