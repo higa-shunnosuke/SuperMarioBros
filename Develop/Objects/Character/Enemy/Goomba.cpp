@@ -37,32 +37,35 @@ void Goomba::Initialize()
 
 void Goomba::Update(float delta_second)
 {
-	is_hit = false;
-
-	if (on_ground == true)
+	if (is_death == false)
 	{
-		g_velocity = 0.0f;
-		velocity.y = 0.0f;
-	}
-	else
-	{
-		//重力加速度の計算
-		g_velocity += D_GRAVITY / 9807;
-		velocity.y += g_velocity;
-	}
+		is_hit = false;
 
-	//落下の実行
-	location.y += velocity.y;
-
-	on_ground = false;
-
-	if (location.x < camera->GetCameraPos().x + D_WIN_MAX_X / 2)
-	{
-		Movement(delta_second);
-
-		if (location.x < camera->GetCameraPos().x - D_WIN_MAX_X / 2)
+		if (on_ground == true)
 		{
-			is_death = true;
+			g_velocity = 0.0f;
+			velocity.y = 0.0f;
+		}
+		else
+		{
+			//重力加速度の計算
+			g_velocity += D_GRAVITY / 9807;
+			velocity.y += g_velocity;
+		}
+
+		//落下の実行
+		location.y += velocity.y;
+
+		on_ground = false;
+
+		if (location.x < camera->GetCameraPos().x + D_WIN_MAX_X / 2)
+		{
+			Movement(delta_second);
+
+			if (location.x < camera->GetCameraPos().x - D_WIN_MAX_X / 2)
+			{
+				is_death = true;
+			}
 		}
 	}
 
@@ -197,24 +200,29 @@ void Goomba::OnHitCollision(GameObject* hit_object)
 		}
 	}
 
-	// プレイヤーに当たったときの処理
-	if (hc.object_type==eObjectType::ePlayer)
+	if (is_death == false)
 	{
-		// プレイヤーが上から当たったのなら
-		if (distance.y >= collision.box_size.y/2.0f)
+		// プレイヤーに当たったときの処理
+		if (hc.object_type == eObjectType::ePlayer)
 		{
-			velocity = 0;
-			image = animation1[2];
+			// プレイヤーが上から当たったのなら
+			if (distance.y >= collision.box_size.y / 2.0f)
+			{
+				collision.is_blocking = false;
+				velocity = 0.0f;
+				image = animation1[2];
+				is_death = true;
+			}
 		}
-	}
 
-	// エネミーに当たったとき
-	if (hc.object_type == eObjectType::eEnemy)
-	{
-		if (is_hit == false)
+		// エネミーに当たったとき
+		if (hc.object_type == eObjectType::eEnemy)
 		{
-			velocity.x = -velocity.x;
-			is_hit = true;
+			if (is_hit == false)
+			{
+				velocity.x = -velocity.x;
+				is_hit = true;
+			}
 		}
 	}
 }
