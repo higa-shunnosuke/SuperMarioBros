@@ -124,4 +124,6 @@ public:
 
 	
 	void Warp(Vector2D location);
+
+	ePlayerState GetState();
 };

@@ -1,4 +1,5 @@
 #include "Block.h"
+#include "../Character/Player/Player.h"
 
 Block::Block():
 	anim_time(),
@@ -81,8 +82,10 @@ void Block::OnHitCollision(GameObject* hit_object)
 				// アニメーション
 				if (diff.x > diff.y)
 				{
-					// 上に
-					is_animation = true;
+					if (dynamic_cast<Player*>(hit_object)->GetState() == ePlayerState::NOMAL)
+					{
+						is_animation = true;
+					}
 				}
 			}
 		}
@@ -99,7 +102,6 @@ void Block::OnHitCollision(GameObject* hit_object)
 				// アニメーション
 				if (-diff.x > diff.y)
 				{
-					// 上に
 					is_animation = true;
 				}
 			}

@@ -100,6 +100,6 @@ void Super::Draw(const Vector2D camera_pos) const
 ///</summary>
 ePlayerState Super::GetState() const
 {
-	return ePlayerState::FIRE;
+	return ePlayerState::SUPER;
 }
 

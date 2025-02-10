@@ -94,6 +94,6 @@ void Nomal::Draw(const Vector2D camera_pos) const
 ///</summary>
 ePlayerState Nomal::GetState() const
 {
-	return ePlayerState::FIRE;
+	return ePlayerState::NOMAL;
 }
 

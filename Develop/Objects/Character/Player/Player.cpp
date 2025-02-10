@@ -66,8 +66,8 @@ void Player::Initialize()
 	InputEventManager* input_event = InputEventManager::GetInstance();
 	input_event->ActionKeyBind(KEY_INPUT_W, eInputState::Pressed, this, &Player::Jump);
 	/*input_event->ActionKeyBind(KEY_INPUT_LSHIFT, eInputState::Hold, this, &Player::Run);*/
-	input_event->ActionKeyBind(KEY_INPUT_A, -2, this, &Player::Movement);
-	input_event->ActionKeyBind(KEY_INPUT_D, 2, this, &Player::Movement);
+	input_event->ActionKeyBind(KEY_INPUT_A, -1, this, &Player::Movement);
+	input_event->ActionKeyBind(KEY_INPUT_D, 1, this, &Player::Movement);
 
 	collision.is_blocking = true;
 	collision.object_type = eObjectType::ePlayer;
@@ -440,4 +440,10 @@ bool Player::GetIsUg()
 void Player::Warp(Vector2D location)
 {
 	this->location = location;
+}
+
+//Œ»İ‚Ìó‘Ôæ“¾ˆ—
+ePlayerState Player::GetState()
+{
+	return state->GetState();
 }
