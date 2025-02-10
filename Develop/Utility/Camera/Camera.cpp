@@ -40,7 +40,7 @@ void Camera::Update()
 			// DEBUGフラグ = FARUSE : プレイヤーが戻るとカメラは追従しない
 #ifdef DEBUG
 		location.x = player->GetLocation().x;
-		location.y = -player->GetLocation().y + D_WIN_MAX_Y;
+		//location.y = -player->GetLocation().y + D_WIN_MAX_Y;
 #else
 		if (player->GetLocation().x >= this->location.x)
 		{
