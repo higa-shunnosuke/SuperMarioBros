@@ -5,9 +5,13 @@
 class Hatena :public BlockBase
 {
 public:
+	std::vector<int> anim_img;		// アニメーション画像
 	float anim_time;
 	int anim_count;
+	int move_count;
 	bool is_animation;
+	int empty_image;
+
 public:
 	Hatena();
 	~Hatena();

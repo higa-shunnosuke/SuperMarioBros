@@ -1,5 +1,6 @@
 #include "WarpBox.h"
 #include "../GameObjectManager.h"
+#include "../Character/Player/Player.h"
 
 WarpBox::WarpBox():
 	pair_no(),

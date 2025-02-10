@@ -265,8 +265,10 @@ void InGame::Draw() const
 		DrawRotaGraph(514 + (i * 19), 55, 1.1, 0.0, num[0], TRUE);
 	}
 
+#ifdef DEBUG
 	DrawFormatString(10, 150, 0xffffff, "x:%f",camera->GetCameraPos().x);
 	DrawFormatString(250, 150, 0xffffff, "y:%f",camera->GetCameraPos().y);
+#endif
 
 	SetFontSize(16);
 	DrawFormatString(10, 80, 0xffffff, "A:¶ˆÚ“®");

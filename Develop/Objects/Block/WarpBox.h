@@ -1,7 +1,6 @@
 #pragma once
 
 #include "BlockBase.h"
-#include "../Character/Player/Player.h"
 #include <string>
 #include <vector>
 

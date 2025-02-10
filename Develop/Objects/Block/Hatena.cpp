@@ -3,7 +3,9 @@
 Hatena::Hatena() :
 	anim_time(),
 	anim_count(),
-	is_animation(false)
+	move_count(),
+	is_animation(true),
+	empty_image()
 {
 
 }
@@ -17,7 +19,8 @@ void Hatena::Initialize()
 {
 	// 画像の読み込み
 	ResourceManager* rm = ResourceManager::GetInstance();
-	image = rm->GetImages("Resource/Images/Block/hatena.png",4,4,1,32,32)[0];
+	anim_img = rm->GetImages("Resource/Images/Block/hatena.png", 4, 4, 1, 32, 32);
+	empty_image = rm->GetImages("Resource/Images/Block/kara_block.png")[0];
 
 	is_mobility = false;
 
@@ -80,10 +83,9 @@ void Hatena::OnHitCollision(GameObject* hit_object)
 					- (hit_object->GetLocation() - hc.box_size / 2);
 
 				// アニメーション
-				if (diff.x > diff.y)
+				if (diff.x >= diff.y)
 				{
-					// 上に
-					is_animation = true;
+					is_animation = false;
 				}
 			}
 		}
@@ -100,8 +102,7 @@ void Hatena::OnHitCollision(GameObject* hit_object)
 				// アニメーション
 				if (-diff.x > diff.y)
 				{
-					// 上に
-					is_animation = true;
+					is_animation = false;
 				}
 			}
 		}
@@ -112,31 +113,43 @@ void Hatena::AnimationControl(float delta_second)
 {
 	anim_time += delta_second;
 
-	if (anim_time >= 0.01f)
+	if (is_animation == true)
 	{
-		if (is_animation == true)
+		if (anim_time >= 0.1f)
 		{
-			if (anim_count < 7)
-			{
-				location.y -= 1;
-				anim_count++;
-			}
-			else if (anim_count < 16)
-			{
-				location.y += 1;
-				anim_count++;
-			}
-			else if (anim_count < 18)
-			{
-				location.y -= 1;
-				anim_count++;
-			}
-			else
+			anim_time = 0.0f;
+			anim_count++;
+			if (anim_count >= 4)
 			{
 				anim_count = 0;
-				is_animation = false;
+			}
+
+			image = anim_img[anim_count];
+		}
+	}
+	else if(move_count < 18)
+	{
+		image = empty_image;
+
+		if (anim_time >= 0.01f)
+		{
+			anim_time = 0;
+
+			if (move_count < 7)
+			{
+				location.y -= 1;
+				move_count++;
+			}
+			else if (move_count < 16)
+			{
+				location.y += 1;
+				move_count++;
+			}
+			else if (move_count < 18)
+			{
+				location.y -= 1;
+				move_count++;
 			}
 		}
-		anim_time = 0;
 	}
 }
