@@ -1,4 +1,5 @@
 #include "Goomba.h"
+#include "../../GameObjectManager.h"
 
 Goomba::Goomba():
 	camera(),
@@ -244,17 +245,28 @@ void Goomba::AnimationControl(float delta_second)
 {
 	anim_count += delta_second;
 
-	if (anim_count >= 0.1f)
+	if (is_death == true)
 	{
-		if (image == animation1[0])
+		if (anim_count >= 0.5f)
 		{
-			image = animation1[1];
+			GameObjectManager* gom = GameObjectManager::GetInstance();
+			gom->DestroyObject(this);
 		}
-		else if (image == animation1[1])
+	}
+	else if (is_death == false)
+	{
+		if (anim_count >= 0.1f)
 		{
-			image = animation1[0];
+			if (image == animation1[0])
+			{
+				image = animation1[1];
+			}
+			else if (image == animation1[1])
+			{
+				image = animation1[0];
+			}
+			anim_count = 0;
 		}
-		anim_count = 0;
 	}
 }
 
