@@ -8,6 +8,8 @@ public:
 	float anim_time;
 	int anim_count;
 	bool is_animation;
+	bool is_collapse;
+
 public:
 	Block();
 	~Block();
@@ -21,6 +23,6 @@ public:
 
 private:
 	void AnimationControl(float delta_second);
-
+	void Collapse();
 };
 

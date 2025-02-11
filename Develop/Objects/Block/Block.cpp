@@ -1,10 +1,13 @@
 #include "Block.h"
 #include "../Character/Player/Player.h"
+#include "../GameObjectManager.h"
+#include "../Character/Fragment/Fragment.h"
 
 Block::Block():
 	anim_time(),
 	anim_count(),
-	is_animation(false)
+	is_animation(false),
+	is_collapse(false)
 {
 
 }
@@ -86,6 +89,12 @@ void Block::OnHitCollision(GameObject* hit_object)
 					{
 						is_animation = true;
 					}
+					else
+					{
+						is_collapse = true;
+
+						Collapse();
+					}
 				}
 			}
 		}
@@ -102,7 +111,16 @@ void Block::OnHitCollision(GameObject* hit_object)
 				// アニメーション
 				if (-diff.x > diff.y)
 				{
-					is_animation = true;
+					if (dynamic_cast<Player*>(hit_object)->GetState() == ePlayerState::NOMAL)
+					{
+						is_animation = true;
+					}
+					else
+					{
+						is_collapse = true;
+
+						Collapse();
+					}
 				}
 			}
 		}
@@ -140,4 +158,46 @@ void Block::AnimationControl(float delta_second)
 		}
 		anim_time = 0;
 	}
+}
+
+void Block::Collapse()
+{
+	Vector2D diff;
+	diff.x = 20;
+
+	GameObjectManager* object = GameObjectManager::GetInstance();
+	Fragment* fragment;
+
+	for (int i = 0; i < 4; i++)
+	{
+		if (i % 2 == 1)
+		{
+			diff.y = 10;
+		}
+		else
+		{
+			diff.y = 40;
+		}
+
+		switch (i)
+		{
+		case 0:
+			fragment = object->CreateObject<Fragment>(Vector2D(location - diff));
+			fragment->SetType(0);
+			break;
+		case 1:
+			fragment = object->CreateObject<Fragment>(Vector2D(location.x - diff.x,location.y - diff.y));
+			fragment->SetType(0);
+			break;
+		case 2:
+			fragment = object->CreateObject<Fragment>(Vector2D(location.x + diff.x, location.y - diff.y));
+			fragment->SetType(1);
+			break;
+		case 3:
+			fragment = object->CreateObject<Fragment>(Vector2D(location.x + diff.x, location.y - diff.y));
+			fragment->SetType(1);
+			break;
+		}
+	}
+	object->DestroyObject(this);
 }

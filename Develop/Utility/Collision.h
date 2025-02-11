@@ -10,6 +10,7 @@ enum class eObjectType : unsigned char
 	ePlayer,
 	eEnemy,
 	eBlock,
+	eFragment,
 	eWarp,
 	eGole,
 	eCastle,

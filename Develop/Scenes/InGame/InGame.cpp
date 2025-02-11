@@ -367,7 +367,19 @@ void InGame::LoadStage()
 		// 抽出した文字がHなら、はてなブロックを生成する
 		else if (c == 'H')
 		{
-			object->CreateObject<Hatena>(Vector2D(location.x, location.y));
+			c = fgetc(fp);
+			switch (c)
+			{
+			case 'C':
+				object->CreateObject<Hatena>(Vector2D(location.x, location.y));
+				break;
+			case 'I':
+				object->CreateObject<Hatena>(Vector2D(location.x, location.y));
+				break;
+			case '1':
+				object->CreateObject<Hatena>(Vector2D(location.x, location.y));
+				break;
+			}
 			x++;
 		}
 		// 抽出した文字がBなら、レンガブロックを生成する
@@ -379,9 +391,11 @@ void InGame::LoadStage()
 			case 'g':
 				object->CreateObject<Block>(Vector2D(location.x, location.y));
 					break;
-
 			case 'u':
 				object->CreateObject<UnderBlock>(Vector2D(location.x, location.y));
+				break;
+			case 'S':
+				object->CreateObject<Block>(Vector2D(location.x, location.y));
 				break;
 			}
 			x++;

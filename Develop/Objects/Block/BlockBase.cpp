@@ -2,8 +2,7 @@
 
 
 BlockBase::BlockBase():
-	image(NULL),
-	is_collapse(false)
+	image(NULL)
 {
 
 }
@@ -31,11 +30,6 @@ void BlockBase::Finalize()
 void BlockBase::OnHitCollision(GameObject* hit_object)
 {
 
-}
-
-bool BlockBase::GetIsCollapse()
-{
-	return is_collapse;
 }
 
 void BlockBase::SetBlockData()
