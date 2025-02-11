@@ -1,4 +1,6 @@
 #include "Hatena.h"
+#include "../Character/Player/Player.h"
+#include "../GameObjectManager.h"
 
 Hatena::Hatena() :
 	anim_time(),
@@ -86,6 +88,7 @@ void Hatena::OnHitCollision(GameObject* hit_object)
 				if (diff.x >= diff.y)
 				{
 					is_animation = false;
+					CreateItem(hit_object);
 				}
 			}
 		}
@@ -103,6 +106,7 @@ void Hatena::OnHitCollision(GameObject* hit_object)
 				if (-diff.x > diff.y)
 				{
 					is_animation = false;
+					CreateItem(hit_object);
 				}
 			}
 		}
@@ -115,16 +119,19 @@ void Hatena::AnimationControl(float delta_second)
 
 	if (is_animation == true)
 	{
-		if (anim_time >= 0.1f)
+		if (type != eHatenaState::UP && type != eHatenaState::STAR)
 		{
-			anim_time = 0.0f;
-			anim_count++;
-			if (anim_count >= 4)
+			if (anim_time >= 0.1f)
 			{
-				anim_count = 0;
-			}
+				anim_time = 0.0f;
+				anim_count++;
+				if (anim_count >= 4)
+				{
+					anim_count = 0;
+				}
 
-			image = anim_img[anim_count];
+				image = anim_img[anim_count];
+			}
 		}
 	}
 	else if(move_count < 18)
@@ -151,5 +158,43 @@ void Hatena::AnimationControl(float delta_second)
 				move_count++;
 			}
 		}
+	}
+}
+
+void Hatena::SetType(eHatenaState type)
+{
+	this->type = type;
+
+	if (type == eHatenaState::STAR)
+	{
+		ResourceManager* rm = ResourceManager::GetInstance();
+		image = rm->GetImages("Resource/Images/Block/block.png")[0];
+	}
+	else if (type == eHatenaState::UP)
+	{
+		ResourceManager* rm = ResourceManager::GetInstance();
+		image = rm->GetImages("Resource/Images/sora.png")[0];
+	}
+}
+
+void Hatena::CreateItem(GameObject* player)
+{
+	GameObjectManager* object = GameObjectManager::GetInstance();
+	dynamic_cast<Player*>(player);
+
+	switch (type)
+	{
+	case eHatenaState::COIN:
+
+		break;
+	case eHatenaState::ITEM:
+
+		break;
+	case eHatenaState::UP:
+
+		break;
+	case eHatenaState::STAR:
+
+		break;
 	}
 }

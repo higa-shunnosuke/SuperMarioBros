@@ -270,11 +270,12 @@ void InGame::Draw() const
 	DrawFormatString(250, 150, 0xffffff, "y:%f",camera->GetCameraPos().y);
 #endif
 
-	SetFontSize(16);
-	DrawFormatString(10, 80, 0xffffff, "A:左移動");
-	DrawFormatString(100, 80, 0xffffff, "D:右移動");
-	DrawFormatString(200, 80, 0xffffff, "W:ジャンプ");
-	DrawFormatString(1, 1, 0xffffff, "InGame");
+	SetFontSize(32);
+	DrawFormatString(10, 80, 0x00, "A:左移動");
+	DrawFormatString(10, 120, 0x00, "D:右移動");
+	DrawFormatString(10, 160, 0x00, "W:ジャンプ");
+	DrawFormatString(10, 200, 0x00, "Z:状態変更");
+	DrawFormatString(1, 1, 0x00, "InGame");
 	SetFontSize(32);
 
 }
@@ -367,17 +368,21 @@ void InGame::LoadStage()
 		// 抽出した文字がHなら、はてなブロックを生成する
 		else if (c == 'H')
 		{
+			Hatena* hatena;
 			c = fgetc(fp);
 			switch (c)
 			{
 			case 'C':
-				object->CreateObject<Hatena>(Vector2D(location.x, location.y));
+				hatena = object->CreateObject<Hatena>(Vector2D(location.x, location.y));
+				hatena->SetType(eHatenaState::COIN);
 				break;
 			case 'I':
-				object->CreateObject<Hatena>(Vector2D(location.x, location.y));
+				hatena = object->CreateObject<Hatena>(Vector2D(location.x, location.y));
+				hatena->SetType(eHatenaState::ITEM);
 				break;
 			case '1':
-				object->CreateObject<Hatena>(Vector2D(location.x, location.y));
+				hatena = object->CreateObject<Hatena>(Vector2D(location.x, location.y));
+				hatena->SetType(eHatenaState::UP);
 				break;
 			}
 			x++;
@@ -395,7 +400,9 @@ void InGame::LoadStage()
 				object->CreateObject<UnderBlock>(Vector2D(location.x, location.y));
 				break;
 			case 'S':
-				object->CreateObject<Block>(Vector2D(location.x, location.y));
+				Hatena * hatena;
+				hatena = object->CreateObject<Hatena>(Vector2D(location.x, location.y));
+				hatena->SetType(eHatenaState::STAR);
 				break;
 			}
 			x++;

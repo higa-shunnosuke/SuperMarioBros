@@ -129,13 +129,13 @@ void Player::Update(float delta_second)
 		//重力加速度の計算
 		if (g_velocity)
 		{
-			g_velocity += D_GRAVITY / 1500;				//(9807),
+			g_velocity += D_GRAVITY / 100 * delta_second;				//(9807),
 		}
 		else
 		{
-			g_velocity += D_GRAVITY / 1600;				//(9807),
+			g_velocity += D_GRAVITY / 100 * delta_second;				//(9807),
 		}
-		g_velocity += D_GRAVITY / 800;				//(9807),
+		g_velocity += D_GRAVITY / 10 * delta_second;				//(9807),
 		velocity.y += g_velocity;
 	}
 
@@ -169,8 +169,6 @@ void Player::Draw(const Vector2D camera_pos) const
 {
 	//状態別の描画処理を行う
 	state->Draw(camera_pos);
-
-	DrawFormatString(490, 90, 0xffffff, ":%d", is_ug);
 
 #ifdef DEBUG
 	// 座標表示
