@@ -71,7 +71,8 @@ void Player::Initialize()
 
 	collision.is_blocking = true;
 	collision.object_type = eObjectType::ePlayer;
-	collision.hit_object_type.push_back(eObjectType::eEnemy);
+	collision.hit_object_type.push_back(eObjectType::eGoomba);
+	collision.hit_object_type.push_back(eObjectType::eKoopa);
 	collision.hit_object_type.push_back(eObjectType::eBlock);
 	collision.hit_object_type.push_back(eObjectType::eCoin);
 	collision.hit_object_type.push_back(eObjectType::eWarp);

@@ -30,7 +30,8 @@ void Hatena::Initialize()
 	collision.is_blocking = true;
 	collision.object_type = eObjectType::eBlock;
 	collision.hit_object_type.push_back(eObjectType::ePlayer);
-	collision.hit_object_type.push_back(eObjectType::eEnemy);
+	collision.hit_object_type.push_back(eObjectType::eGoomba);
+	collision.hit_object_type.push_back(eObjectType::eKoopa);;
 	collision.box_size = Vector2D(32.0f, 32.0f);
 
 }

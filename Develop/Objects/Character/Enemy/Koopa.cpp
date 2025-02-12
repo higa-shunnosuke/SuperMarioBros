@@ -27,9 +27,9 @@ void Koopa::Initialize()
 	z_layer = 2;
 
 	collision.is_blocking = true;
-	collision.object_type = eObjectType::eEnemy;
+	collision.object_type = eObjectType::eKoopa;
 	collision.hit_object_type.push_back(eObjectType::ePlayer);
-	collision.hit_object_type.push_back(eObjectType::eEnemy);
+	collision.hit_object_type.push_back(eObjectType::eKoopa);
 	collision.hit_object_type.push_back(eObjectType::eBlock);
 	collision.box_size = Vector2D(32.0f, 39.0f);
 
@@ -241,7 +241,7 @@ void Koopa::OnHitCollision(GameObject* hit_object)
 	}
 
 	// エネミーに当たったとき
-	if (hc.object_type == eObjectType::eEnemy)
+	if (hc.object_type == eObjectType::eKoopa)
 	{
 		if (is_hit == false)
 		{

@@ -29,6 +29,7 @@ private:
 	float friction;					//摩擦
 	Camera* camera;					//カメラ情報
 	bool is_ug;						//地下にいるか
+	std::vector<int> animation;		//移動のアニメーション画像
 
 public:
 	Player();	//初期位置 0, 速度 1

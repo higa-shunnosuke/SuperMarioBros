@@ -26,9 +26,9 @@ void Goomba::Initialize()
 	z_layer = 2;
 
 	collision.is_blocking = true;
-	collision.object_type = eObjectType::eEnemy;
+	collision.object_type = eObjectType::eGoomba;
 	collision.hit_object_type.push_back(eObjectType::ePlayer);
-	collision.hit_object_type.push_back(eObjectType::eEnemy);
+	collision.hit_object_type.push_back(eObjectType::eGoomba);
 	collision.hit_object_type.push_back(eObjectType::eBlock);
 	collision.box_size = Vector2D(25.0f, 25.0f);
 
@@ -217,7 +217,7 @@ void Goomba::OnHitCollision(GameObject* hit_object)
 		}
 
 		// エネミーに当たったとき
-		if (hc.object_type == eObjectType::eEnemy)
+		if (hc.object_type == eObjectType::eGoomba)
 		{
 			if (is_hit == false)
 			{
