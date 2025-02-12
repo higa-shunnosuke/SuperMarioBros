@@ -12,11 +12,12 @@
 #include "../../Objects/Block/Castle.h"
 #include "../../Objects/Block/UnderBlock.h"
 #include "../../Objects/Block/UnderFloor.h"
+#include "../../Objects/Items/Coin.h"
 #include "../../Objects/Character/Enemy/Koopa.h"
 #include "../../Objects/Character/Enemy/Goomba.h"
 #include "../../Utility/StageData.h"
 
-#define PLAYER_INITIAL_LOCATION 3 // プレイヤー初期位置(何ブロック目）
+#define PLAYER_INITIAL_LOCATION 50 // プレイヤー初期位置(何ブロック目）
 
 // コンストラクタ
 InGame::InGame() :
@@ -554,7 +555,7 @@ void InGame::LoadStage()
 			switch (c)
 			{
 			case 'I':
-				
+				object->CreateObject<Coin>(Vector2D(location.x, location.y));
 				break;
 			case 'O':
 				object->CreateObject<Castle>(Vector2D(location.x, location.y));

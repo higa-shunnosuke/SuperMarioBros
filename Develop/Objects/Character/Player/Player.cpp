@@ -73,8 +73,9 @@ void Player::Initialize()
 	collision.object_type = eObjectType::ePlayer;
 	collision.hit_object_type.push_back(eObjectType::eEnemy);
 	collision.hit_object_type.push_back(eObjectType::eBlock);
-	collision.hit_object_type.push_back(eObjectType::eItem);
+	collision.hit_object_type.push_back(eObjectType::eCoin);
 	collision.hit_object_type.push_back(eObjectType::eWarp);
+	collision.hit_object_type.push_back(eObjectType::eCoin);
 }
 
 //Update‚É’Ç‰Á
@@ -340,6 +341,11 @@ void Player::OnHitCollision(GameObject* hit_object)
 				is_ug = false;
 			}
 		}
+	}
+
+	if (hc.object_type == eObjectType::eCoin)
+	{
+
 	}
 }
 

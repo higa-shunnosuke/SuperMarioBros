@@ -7,7 +7,8 @@ Hatena::Hatena() :
 	anim_count(),
 	move_count(),
 	is_animation(true),
-	empty_image()
+	empty_image(),
+	type(eHatenaState::COIN)
 {
 
 }

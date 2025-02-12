@@ -133,7 +133,7 @@
   <ItemGroup>
     <ClCompile Include="Application.h" />
     <ClCompile Include="AppMain.cpp" />
-    <ClCompile Include="Coin.cpp" />
+    <ClCompile Include="Objects\Items\Coin.cpp" />
     <ClCompile Include="Objects\Character\Fragment\Fragment.cpp" />
     <ClCompile Include="Objects\Block\Castle.cpp" />
     <ClCompile Include="Objects\Block\Goal.cpp" />
@@ -169,7 +169,7 @@
     <ClCompile Include="Objects\Block\WarpBox.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Coin.h" />
+    <ClInclude Include="Objects\Items\Coin.h" />
     <ClInclude Include="Objects\Character\Fragment\Fragment.h" />
     <ClInclude Include="Objects\Block\Castle.h" />
     <ClInclude Include="Objects\Block\Goal.h" />

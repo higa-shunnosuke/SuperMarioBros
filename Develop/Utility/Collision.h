@@ -14,7 +14,12 @@ enum class eObjectType : unsigned char
 	eWarp,
 	eGole,
 	eCastle,
-	eItem
+	eCoin,
+	eMushrooms,
+	eFireFlower,
+	e1UPMushrooms,
+	eStar,
+	eFireBall
 };
 
 // “–‚½‚è”»’èŠî’êƒNƒ‰ƒX
