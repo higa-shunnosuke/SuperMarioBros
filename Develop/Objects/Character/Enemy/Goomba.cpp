@@ -3,7 +3,8 @@
 
 Goomba::Goomba():
 	camera(),
-	is_hit(false)
+	is_hit(false),
+	step_s(0)
 {
 
 }
@@ -19,6 +20,8 @@ void Goomba::Initialize()
 	ResourceManager* rm = ResourceManager::GetInstance();
 	animation1 = rm->GetImages("Resource/Images/Enemy/kuribo.png", 3, 3, 1, 32, 32);
 
+	step_s = rm->GetSounds("Resource/Sounds/SE_StepOn.wav");
+
 	g_velocity = 0.0f;
 	velocity = Vector2D(-200.0f, 0.0f);
 	on_ground = true;
@@ -29,6 +32,7 @@ void Goomba::Initialize()
 	collision.object_type = eObjectType::eGoomba;
 	collision.hit_object_type.push_back(eObjectType::ePlayer);
 	collision.hit_object_type.push_back(eObjectType::eGoomba);
+	collision.hit_object_type.push_back(eObjectType::eKoopa);
 	collision.hit_object_type.push_back(eObjectType::eBlock);
 	collision.box_size = Vector2D(25.0f, 25.0f);
 
@@ -68,6 +72,13 @@ void Goomba::Update(float delta_second)
 				is_death = true;
 			}
 		}
+	}
+
+	// 奈落に落ちたら死ぬ
+	if (location.y >= 500.0f)
+	{
+		GameObjectManager* gom = GameObjectManager::GetInstance();
+		gom->DestroyObject(this);
 	}
 
 	AnimationControl(delta_second);
@@ -213,11 +224,20 @@ void Goomba::OnHitCollision(GameObject* hit_object)
 				velocity = 0.0f;
 				image = animation1[2];
 				is_death = true;
+				PlaySoundMem(step_s, DX_PLAYTYPE_BACK, true);
 			}
 		}
 
 		// エネミーに当たったとき
 		if (hc.object_type == eObjectType::eGoomba)
+		{
+			if (is_hit == false)
+			{
+				velocity.x = -velocity.x;
+				is_hit = true;
+			}
+		}
+		if (hc.object_type == eObjectType::eKoopa)
 		{
 			if (is_hit == false)
 			{

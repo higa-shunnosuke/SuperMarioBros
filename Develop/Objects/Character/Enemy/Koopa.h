@@ -9,6 +9,11 @@ private:
 	std::vector<int> animation1;		//移動のアニメーション画像
 	std::vector<int> animation2;		//甲羅のアニメーション画像
 
+	int block_s;         // ブロックに当たった音
+	int pipe_s;          // 土管に当たった音
+	int step_s;          // 踏まれた音
+	int kick_s;          // 蹴られた音
+
 	bool is_shell;  // 甲羅状態かどうか
 	bool is_hit;    // 一度当たった状態かどうか
 

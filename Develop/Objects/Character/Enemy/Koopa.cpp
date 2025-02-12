@@ -1,9 +1,14 @@
 #include "Koopa.h"
+#include "../../GameObjectManager.h"
 
 Koopa::Koopa() :
 	camera(),
 	is_shell(false),
-	is_hit(false)
+	is_hit(false),
+	block_s(0),
+	pipe_s(0),
+	step_s(0),
+	kick_s(0)
 {
 
 }
@@ -20,6 +25,11 @@ void Koopa::Initialize()
 	animation1 = rm->GetImages("Resource/Images/Enemy/nokonoko.png", 2, 2, 1, 32, 64);
 	animation2 = rm->GetImages("Resource/Images/Enemy/nokonoko_revival.png", 2, 2, 1, 32, 32);
 
+	block_s = rm->GetSounds("Resource/Sounds/SE_Block.wav");
+	pipe_s = rm->GetSounds("Resource/Sounds/SE_HitPipe.wav");
+	step_s = rm->GetSounds("Resource/Sounds/SE_StepOn.wav");
+	kick_s = rm->GetSounds("Resource/Sounds/SE_Kick.wav");
+
 	g_velocity = 0.0f;
 	velocity = Vector2D(-200.0f,0.0f);
 	on_ground = true;
@@ -30,6 +40,7 @@ void Koopa::Initialize()
 	collision.object_type = eObjectType::eKoopa;
 	collision.hit_object_type.push_back(eObjectType::ePlayer);
 	collision.hit_object_type.push_back(eObjectType::eKoopa);
+	collision.hit_object_type.push_back(eObjectType::eGoomba);
 	collision.hit_object_type.push_back(eObjectType::eBlock);
 	collision.box_size = Vector2D(32.0f, 39.0f);
 
@@ -65,6 +76,13 @@ void Koopa::Update(float delta_second)
 		{
 			is_death = true;
 		}
+	}
+
+	// 奈落に落ちたら死ぬ
+	if (location.y >= 500.0f)
+	{
+		GameObjectManager* gom = GameObjectManager::GetInstance();
+		gom->DestroyObject(this);
 	}
 
 	AnimationControl(delta_second);
@@ -242,6 +260,14 @@ void Koopa::OnHitCollision(GameObject* hit_object)
 
 	// エネミーに当たったとき
 	if (hc.object_type == eObjectType::eKoopa)
+	{
+		if (is_hit == false)
+		{
+			velocity.x = -velocity.x;
+			is_hit = true;
+		}
+	}
+	if (hc.object_type == eObjectType::eGoomba)
 	{
 		if (is_hit == false)
 		{
