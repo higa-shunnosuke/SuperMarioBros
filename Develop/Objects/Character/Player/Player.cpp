@@ -342,11 +342,6 @@ void Player::OnHitCollision(GameObject* hit_object)
 			}
 		}
 	}
-
-	if (hc.object_type == eObjectType::eCoin)
-	{
-
-	}
 }
 
 ///<summary>

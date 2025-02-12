@@ -8,7 +8,8 @@ enum class eObjectType : unsigned char
 {
 	eNone,
 	ePlayer,
-	eEnemy,
+	eGoomba,
+	eKoopa,
 	eBlock,
 	eFragment,
 	eWarp,
