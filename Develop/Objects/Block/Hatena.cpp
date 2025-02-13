@@ -1,6 +1,7 @@
 #include "Hatena.h"
 #include "../Character/Player/Player.h"
 #include "../GameObjectManager.h"
+#include "../Items/Coin.h"
 
 Hatena::Hatena() :
 	anim_time(),
@@ -8,7 +9,8 @@ Hatena::Hatena() :
 	move_count(),
 	is_animation(true),
 	empty_image(),
-	type(eHatenaState::COIN)
+	type(eHatenaState::COIN),
+	is_empty()
 {
 
 }
@@ -71,44 +73,47 @@ void Hatena::OnHitCollision(GameObject* hit_object)
 	// 当たった、オブジェクトがプレイヤーだったら
 	if (hc.object_type == eObjectType::ePlayer)
 	{
-		Vector2D diff;	// めり込み
-
-		// ２点間の距離を計算
-		Vector2D distance;
-		distance = this->location - hit_object->GetLocation();
-
-		// 衝突面を求める
-		if (distance.x <= 0)
+		if (is_empty == false)
 		{
-			if (distance.y <= 0)
-			{
-				// ブロックの右辺と下辺、プレイヤーの左辺と上辺のめり込みを計算
-				diff = (this->location + collision.box_size / 2)
-					- (hit_object->GetLocation() - hc.box_size / 2);
+			Vector2D diff;	// めり込み
 
-				// アニメーション
-				if (diff.x >= diff.y)
+			// ２点間の距離を計算
+			Vector2D distance;
+			distance = this->location - hit_object->GetLocation();
+
+			// 衝突面を求める
+			if (distance.x <= 0)
+			{
+				if (distance.y <= 0)
 				{
-					is_animation = false;
-					CreateItem(hit_object);
+					// ブロックの右辺と下辺、プレイヤーの左辺と上辺のめり込みを計算
+					diff = (this->location + collision.box_size / 2)
+						- (hit_object->GetLocation() - hc.box_size / 2);
+
+					// アニメーション
+					if (diff.x >= diff.y)
+					{
+						is_empty = true;
+						CreateItem(hit_object);
+					}
 				}
 			}
-		}
-		else
-		{
-			if (distance.y < 0)
+			else
 			{
-				// ブロックの左辺と下辺、プレイヤーの右辺と上辺のめり込みを計算
-				diff = Vector2D((this->location.x - collision.box_size.x / 2),
-					(this->location.y + collision.box_size.y / 2))
-					- Vector2D((hit_object->GetLocation().x + hc.box_size.x / 2),
-						(hit_object->GetLocation().y - hc.box_size.y / 2));
-
-				// アニメーション
-				if (-diff.x > diff.y)
+				if (distance.y < 0)
 				{
-					is_animation = false;
-					CreateItem(hit_object);
+					// ブロックの左辺と下辺、プレイヤーの右辺と上辺のめり込みを計算
+					diff = Vector2D((this->location.x - collision.box_size.x / 2),
+						(this->location.y + collision.box_size.y / 2))
+						- Vector2D((hit_object->GetLocation().x + hc.box_size.x / 2),
+							(hit_object->GetLocation().y - hc.box_size.y / 2));
+
+					// アニメーション
+					if (-diff.x > diff.y)
+					{
+						is_empty = true;
+						CreateItem(hit_object);
+					}
 				}
 			}
 		}
@@ -119,7 +124,7 @@ void Hatena::AnimationControl(float delta_second)
 {
 	anim_time += delta_second;
 
-	if (is_animation == true)
+	if (is_empty == false)
 	{
 		if (type != eHatenaState::UP && type != eHatenaState::STAR)
 		{
@@ -187,7 +192,9 @@ void Hatena::CreateItem(GameObject* player)
 	switch (type)
 	{
 	case eHatenaState::COIN:
-
+		Coin* coin;
+		coin = object->CreateObject<Coin>(Vector2D(location.x,location.y - 10.0f));
+		coin->SetType(true);
 		break;
 	case eHatenaState::ITEM:
 

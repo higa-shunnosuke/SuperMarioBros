@@ -17,7 +17,7 @@
 #include "../../Objects/Character/Enemy/Goomba.h"
 #include "../../Utility/StageData.h"
 
-#define PLAYER_INITIAL_LOCATION 50 // プレイヤー初期位置(何ブロック目）
+#define PLAYER_INITIAL_LOCATION 10 // プレイヤー初期位置(何ブロック目）
 
 // コンストラクタ
 InGame::InGame() :

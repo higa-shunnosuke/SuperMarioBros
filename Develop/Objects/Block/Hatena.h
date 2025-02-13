@@ -19,6 +19,7 @@ public:
 	bool is_animation;
 	int empty_image;
 	eHatenaState type;
+	bool is_empty;
 
 public:
 	Hatena();

@@ -4,7 +4,9 @@
 
 Coin::Coin() :
 	anim_time(),
-	anim_count()
+	anim_count(),
+	is_item(false),
+	count()
 {
 
 }
@@ -18,7 +20,8 @@ void Coin::Initialize()
 {
 	// 画像の読み込み
 	ResourceManager* rm = ResourceManager::GetInstance();
-	anim_img = rm->GetImages("Resource/Images/Item/coin.png", 4, 4, 1, 32, 32);
+	anim_img1 = rm->GetImages("Resource/Images/Item/coin.png", 4, 4, 1, 32, 32);
+	anim_img2 = rm->GetImages("Resource/Images/Item/mukidasitika_coin.png", 4, 4, 1, 32, 32);
 
 	is_mobility = false;
 
@@ -27,11 +30,13 @@ void Coin::Initialize()
 	collision.hit_object_type.push_back(eObjectType::ePlayer);
 	collision.box_size = Vector2D(32.0f, 32.0f);
 
+	count = 0;
 }
 
 void Coin::Update(float delta_second)
 {
 	AnimationControl(delta_second);
+
 }
 
 void Coin::Draw(const Vector2D camera_pos) const
@@ -63,8 +68,11 @@ void Coin::OnHitCollision(GameObject* hit_object)
 	// 当たった、オブジェクトがプレイヤーだったら
 	if (hc.object_type == eObjectType::ePlayer)
 	{
-		GameObjectManager* object = GameObjectManager::GetInstance();
-		object->DestroyObject(this);
+		if (is_item == false)
+		{
+			GameObjectManager* object = GameObjectManager::GetInstance();
+			object->DestroyObject(this);
+		}
 	}
 }
 
@@ -72,15 +80,54 @@ void Coin::AnimationControl(float delta_second)
 {
 	anim_time += delta_second;
 
-	if (anim_time >= 0.1f)
+	if (is_item == true)
 	{
-		anim_time = 0.0f;
-		anim_count++;
-		if (anim_count >= 4)
+		if (anim_time >= 0.03f)
 		{
-			anim_count = 0;
-		}
+			anim_time = 0.0f;
+			anim_count++;
+			if (anim_count >= 4)
+			{
+				anim_count = 0;
+			}
 
-		image = anim_img[anim_count];
+			image = anim_img1[anim_count];
+
+			if (count < 10)
+			{
+				location.y -= 10;
+				count++;
+			}
+			else if (count < 16)
+			{
+				location.y += 10;
+				count++;
+			}
+			else
+			{
+				GameObjectManager* object = GameObjectManager::GetInstance();
+				object->DestroyObject(this);
+			}
+		}
 	}
+	else
+	{
+		if (anim_time >= 0.1f)
+		{
+			anim_time = 0.0f;
+			anim_count++;
+			if (anim_count >= 4)
+			{
+				anim_count = 0;
+			}
+
+			image = anim_img2[anim_count];
+		}
+	}
+	
+}
+
+void Coin::SetType(bool is_item)
+{
+	this->is_item = is_item;
 }
