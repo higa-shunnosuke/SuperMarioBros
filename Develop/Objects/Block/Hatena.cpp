@@ -2,6 +2,10 @@
 #include "../Character/Player/Player.h"
 #include "../GameObjectManager.h"
 #include "../Items/Coin.h"
+#include "../Items/FireFlower.h"
+#include "../Items/Mushrooms.h"
+#include "../Items/OneUpMushrooms.h"
+#include "../Items/Star.h"
 
 Hatena::Hatena() :
 	anim_time(),
@@ -36,6 +40,7 @@ void Hatena::Initialize()
 	collision.hit_object_type.push_back(eObjectType::eKoopa);;
 	collision.box_size = Vector2D(32.0f, 32.0f);
 
+	z_layer = 2;
 }
 
 void Hatena::Update(float delta_second)
@@ -187,7 +192,6 @@ void Hatena::SetType(eHatenaState type)
 void Hatena::CreateItem(GameObject* player)
 {
 	GameObjectManager* object = GameObjectManager::GetInstance();
-	dynamic_cast<Player*>(player);
 
 	switch (type)
 	{
@@ -197,13 +201,22 @@ void Hatena::CreateItem(GameObject* player)
 		coin->SetType(true);
 		break;
 	case eHatenaState::ITEM:
-
+		if (dynamic_cast<Player*>(player)->GetState() != ePlayerState::NOMAL)
+		{
+			//ちびマリオ出なければファイヤフラワーを作成
+			object->CreateObject<FireFlower>(Vector2D(location.x, location.y));
+		}
+		else
+		{
+			//ちびマリオならスーパーキノコを作成
+			object->CreateObject<Mushrooms>(Vector2D(location.x, location.y));
+		}
 		break;
 	case eHatenaState::UP:
-
+		object->CreateObject<OneUpMushrooms>(Vector2D(location.x, location.y));
 		break;
 	case eHatenaState::STAR:
-
+		object->CreateObject<Star>(Vector2D(location.x, location.y));
 		break;
 	}
 }

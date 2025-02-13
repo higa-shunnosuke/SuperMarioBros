@@ -133,6 +133,8 @@
   <ItemGroup>
     <ClCompile Include="Application.h" />
     <ClCompile Include="AppMain.cpp" />
+    <ClCompile Include="Objects\Items\FireFlower.cpp" />
+    <ClCompile Include="Objects\Items\Mushrooms.cpp" />
     <ClCompile Include="Objects\Items\Coin.cpp" />
     <ClCompile Include="Objects\Character\Fragment\Fragment.cpp" />
     <ClCompile Include="Objects\Block\Castle.cpp" />
@@ -145,6 +147,8 @@
     <ClCompile Include="Objects\Character\Player\State\Tibi.cpp" />
     <ClCompile Include="Objects\Block\UnderBlock.cpp" />
     <ClCompile Include="Objects\Block\UnderFloor.cpp" />
+    <ClCompile Include="Objects\Items\OneUpMushrooms.cpp" />
+    <ClCompile Include="Objects\Items\Star.cpp" />
     <ClCompile Include="Utility\StageData.cpp" />
     <ClCompile Include="Utility\Camera\Camera.cpp" />
     <ClCompile Include="Objects\Block\Floor.cpp" />
@@ -169,6 +173,8 @@
     <ClCompile Include="Objects\Block\WarpBox.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Objects\Items\FireFlower.h" />
+    <ClInclude Include="Objects\Items\Mushrooms.h" />
     <ClInclude Include="Objects\Items\Coin.h" />
     <ClInclude Include="Objects\Character\Fragment\Fragment.h" />
     <ClInclude Include="Objects\Block\Castle.h" />
@@ -181,6 +187,8 @@
     <ClInclude Include="Objects\Character\Player\State\Tibi.h" />
     <ClInclude Include="Objects\Block\UnderBlock.h" />
     <ClInclude Include="Objects\Block\UnderFloor.h" />
+    <ClInclude Include="Objects\Items\OneUpMushrooms.h" />
+    <ClInclude Include="Objects\Items\Star.h" />
     <ClInclude Include="Utility\StageData.h" />
     <ClInclude Include="Utility\Camera\Camera.h" />
     <ClInclude Include="Objects\Block\Floor.h" />

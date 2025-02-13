@@ -13,7 +13,7 @@ public:
 	int count;
 
 public:
-	Coin();	//‰ŠúˆÊ’u 0, ‘¬“x 1
+	Coin();
 	~Coin();
 
 public:

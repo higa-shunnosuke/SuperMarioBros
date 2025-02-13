@@ -30,6 +30,7 @@ void Coin::Initialize()
 	collision.hit_object_type.push_back(eObjectType::ePlayer);
 	collision.box_size = Vector2D(32.0f, 32.0f);
 
+	z_layer = 1;
 	count = 0;
 }
 
