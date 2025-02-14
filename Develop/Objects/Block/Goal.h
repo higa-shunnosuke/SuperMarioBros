@@ -12,7 +12,7 @@ class Goal :public BlockBase
 {
 public:
 	eGoalType type;
-
+	float frag_location;
 public:
 	Goal();
 	~Goal();

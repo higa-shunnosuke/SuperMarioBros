@@ -77,6 +77,7 @@ void Player::Initialize()
 	collision.hit_object_type.push_back(eObjectType::eCoin);
 	collision.hit_object_type.push_back(eObjectType::eWarp);
 	collision.hit_object_type.push_back(eObjectType::eCoin);
+	collision.hit_object_type.push_back(eObjectType::eCastle);
 }
 
 //Update‚É’Ç‰Á

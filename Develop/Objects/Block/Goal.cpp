@@ -1,7 +1,8 @@
 #include "Goal.h"
 
 Goal::Goal():
-	type()
+	type(),
+	frag_location()
 {
 
 }
